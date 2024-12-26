@@ -144,11 +144,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
             
             {
-                id: 'products.category-product',
+                id: 'products.category-item',
                 title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
-                link: '/admin/category-product/list',
+                link: '/admin/category-item/list',
             },
             {
                 id: 'products.product',
@@ -158,11 +158,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/order/list',
             },
             {
-                id: 'category-attribute.list',
+                id: 'products.category-game',
                 title: 'ประเภท Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench-screwdriver',
-                link: '/admin/category-attribute/list',
+                link: '/admin/category-game/list',
             },
             {
                 id: 'game.list',
