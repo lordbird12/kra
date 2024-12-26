@@ -155,7 +155,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 title: 'Order',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
-                link: '/admin/product/list',
+                link: '/admin/order/list',
             },
             {
                 id: 'category-attribute.list',
