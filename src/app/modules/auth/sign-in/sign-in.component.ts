@@ -11,21 +11,22 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { FuseAlertComponent, FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector     : 'auth-sign-in',
-    templateUrl  : './sign-in.component.html',
+    selector: 'auth-sign-in',
+    templateUrl: './sign-in.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations,
-    standalone   : true,
-    imports      : [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule],
+    animations: fuseAnimations,
+    standalone: true,
+    imports: [RouterLink, FuseAlertComponent, NgIf, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule, MatCheckboxModule, MatProgressSpinnerModule, MatSelectModule,CommonModule],
 })
-export class AuthSignInComponent implements OnInit
-{
+export class AuthSignInComponent implements OnInit {
     @ViewChild('signInNgForm') signInNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: '',
     };
     signInForm: UntypedFormGroup;
@@ -39,8 +40,7 @@ export class AuthSignInComponent implements OnInit
         private _authService: AuthService,
         private _formBuilder: UntypedFormBuilder,
         private _router: Router,
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -50,12 +50,12 @@ export class AuthSignInComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Create the form
         this.signInForm = this._formBuilder.group({
-            username     : ['', [Validators.required]],
-            password  : ['', Validators.required],
+            username: ['', [Validators.required]],
+            password: ['', Validators.required],
+            type: ['', Validators.required],
             rememberMe: [''],
         });
     }
@@ -67,11 +67,9 @@ export class AuthSignInComponent implements OnInit
     /**
      * Sign in
      */
-    signIn(): void
-    {
+    signIn(): void {
         // Return if the form is invalid
-        if ( this.signInForm.invalid )
-        {
+        if (this.signInForm.invalid) {
             return;
         }
 
@@ -84,8 +82,7 @@ export class AuthSignInComponent implements OnInit
         // Sign in
         this._authService.signIn(this.signInForm.value)
             .subscribe(
-                () =>
-                {
+                () => {
                     // Set the redirect url.
                     // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
                     // to the correct page after a successful sign in. This way, that url can be set via
@@ -96,8 +93,7 @@ export class AuthSignInComponent implements OnInit
                     this._router.navigateByUrl(redirectURL);
 
                 },
-                (response) =>
-                {
+                (response) => {
                     // Re-enable the form
                     this.signInForm.enable();
 
@@ -106,7 +102,7 @@ export class AuthSignInComponent implements OnInit
 
                     // Set the alert
                     this.alert = {
-                        type   : 'error',
+                        type: 'error',
                         message: 'Wrong email or password',
                     };
 
