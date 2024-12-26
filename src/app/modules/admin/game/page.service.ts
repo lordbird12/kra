@@ -193,7 +193,7 @@ export class PageService {
     getPage(dataTablesParameters: any): Observable<DataTablesResponse> {
         return this._httpClient
             .post(
-                environment.baseURL + '/api/brand_page',
+                environment.baseURL + '/api/game_page',
                 dataTablesParameters,
             )
             .pipe(

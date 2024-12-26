@@ -137,6 +137,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/brand/list',
             },
             {
+                id: 'products.game',
+                title: 'Game',
+                type: 'basic',
+                icon: 'heroicons_outline:building-office-2',
+                link: '/admin/game/list',
+            },
+            {
                 id: 'products.category-product',
                 title: 'ประเภทรถยนต์',
                 type: 'basic',
