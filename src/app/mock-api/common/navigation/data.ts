@@ -345,6 +345,52 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //     ],
     // },
     {
+        id: 'products',
+        title: 'จัดการประเภทรายการ',
+        subtitle: 'ขัอมูลเกี่ยวกับระบบ',
+        type: 'group',
+        icon: 'heroicons_outline:home',
+        children: [
+
+            // {
+            //     id: 'products.brand',
+            //     title: 'ยี่ห้อรถ',
+            //     type: 'basic',
+            //     icon: 'heroicons_outline:building-office-2',
+            //     link: '/admin/brand/list',
+            // },
+            {
+                id: 'products.category-product',
+                title: 'ประเภทรายการ',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/admin/category-product/list',
+            },
+            {
+                id: 'products.product',
+                title: 'Order',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/admin/product/list',
+            },
+            {
+                id: 'category-attribute.list',
+                title: 'ประเภท Game',
+                type: 'basic',
+                icon: 'heroicons_outline:wrench-screwdriver',
+                link: '/admin/category-attribute/list',
+            },
+            {
+                id: 'spare-part.list',
+                title: 'Game',
+                type: 'basic',
+                icon: 'heroicons_outline:wrench',
+                link: '/admin/product-attribute/list',
+            },
+        ],
+    },
+
+    {
         id: 'self',
         title: 'ส่วนตัว',
         subtitle: 'จัดการโปรไฟล์',
