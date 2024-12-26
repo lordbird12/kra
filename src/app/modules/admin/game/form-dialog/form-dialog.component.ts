@@ -68,26 +68,27 @@ export class FormDialogComponent implements OnInit {
         }
 
         this.addForm = this.formBuilder.group({
-            id: '',
-            name: ['', Validators.required],
-            game_categorie_id: ['', Validators.required],
-            show_step: '',
-            image: [],
-            brand: '',
+            id: '',                       // ID
+            name: ['', Validators.required], // ชื่อเกม
+            game_categorie_id: ['', Validators.required], // หมวดหมู่เกม
+            show_step: '',               // ขั้นตอน
+            image: '',                   // รูปภาพ
+            brand: '',                   // แบรนด์
         });
-        
+
+
     }
-    
+
 
     ngOnInit(): void {
         if (this.data) {
             this.addForm.patchValue({ ...this.data });
         }
-    
+
         this.loadCategories();
         console.log('Initial form value:', this.addForm.value);
     }
-    
+
 
 
     loadCategories(): void {
@@ -99,13 +100,13 @@ export class FormDialogComponent implements OnInit {
             error: (err) => console.error('Failed to load categories', err),
         });
     }
-    
-    
+
+
 
     onSaveClick(): void {
         this.flashMessage = null;
         // Open the confirmation dialog
-        if(this.data) {
+        if (this.data) {
             const confirmation = this._fuseConfirmationService.open({
                 "title": "แก้ไขข้อมูล",
                 "message": "คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ",
@@ -127,14 +128,19 @@ export class FormDialogComponent implements OnInit {
                 },
                 "dismissible": true
             });
-    
+
             // Subscribe to the confirmation dialog closed action
             confirmation.afterClosed().subscribe((result) => {
                 if (result === 'confirmed') {
                     const formData = new FormData();
-                    Object.entries(this.addForm.value).forEach(([key, value]: any[]) => {
-                        formData.append(key, value);
+                    Object.entries(this.addForm.value).forEach(([key, value]: [string, any]) => {
+                        if (key === 'image' && value instanceof File) {
+                            formData.append(key, value); // ถ้า image เป็นไฟล์
+                        } else {
+                            formData.append(key, value);
+                        }
                     });
+
 
                     for (var i = 0; i < this.files.length; i++) {
                         formData.append('image', this.files[i]);
@@ -163,7 +169,7 @@ export class FormDialogComponent implements OnInit {
                                     "cancel": {
                                         "show": false,
                                         "label": "ยกเลิก",
-    
+
                                     }
                                 },
                                 "dismissible": true
@@ -194,11 +200,11 @@ export class FormDialogComponent implements OnInit {
                 },
                 "dismissible": true
             });
-    
+
             // Subscribe to the confirmation dialog closed action
             confirmation.afterClosed().subscribe((result) => {
                 if (result === 'confirmed') {
-    
+
                     const formData = new FormData();
                     Object.entries(this.addForm.value).forEach(([key, value]: any[]) => {
                         formData.append(key, value);
@@ -231,7 +237,7 @@ export class FormDialogComponent implements OnInit {
                                     "cancel": {
                                         "show": false,
                                         "label": "ยกเลิก",
-    
+
                                     }
                                 },
                                 "dismissible": true
@@ -241,10 +247,10 @@ export class FormDialogComponent implements OnInit {
                 }
             })
         }
-    
 
 
-      
+
+
 
     }
 
