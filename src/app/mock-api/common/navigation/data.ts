@@ -256,15 +256,9 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:home',
         children: [
 
-            // {
-            //     id: 'products.brand',
-            //     title: 'ยี่ห้อรถ',
-            //     type: 'basic',
-            //     icon: 'heroicons_outline:building-office-2',
-            //     link: '/admin/brand/list',
-            // },
+            
             {
-                id: 'products.category-product',
+                id: 'products.category-item',
                 title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
@@ -278,7 +272,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/product/list',
             },
             {
-                id: 'category-attribute.list',
+                id: 'category-attribute.game',
                 title: 'ประเภท Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench-screwdriver',
