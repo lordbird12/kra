@@ -74,14 +74,24 @@ export class PageService {
             );
     }
 
-    update(data: any, id: any): Observable<any> {
+    update(data: any): Observable<any> {
         return this._httpClient
-            .put<any>(environment.baseURL + '/api/order/' + id, data)
+            .post<any>(environment.baseURL + '/api/update_page', data)
             .pipe(
                 tap((result) => {
                     this._data.next(result);
                 })
             );
+    }
+    
+    getpageCategories(): Observable<any[]> {
+        return this._httpClient.get<any>(`${environment.baseURL}/api/get_page/`).pipe(
+            map((response) => response.data || []), // ใช้ data ที่เป็นอาเรย์
+            catchError((error) => {
+                console.error('Error fetching categories:', error);
+                return of([]);
+            })
+        );
     }
 
     delete(id: any): Observable<any> {
@@ -93,7 +103,7 @@ export class PageService {
 
     getById(id: any): Observable<any> {
         return this._httpClient
-            .get<any>(environment.baseURL + '/api/orders/' + id)
+            .get<any>(environment.baseURL + '/api/page/' + id)
             .pipe(
                 tap((result) => {
                     this._data.next(result);

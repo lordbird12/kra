@@ -1,136 +1,89 @@
 <div class="flex flex-col flex-auto min-w-0">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b
-        bg-card dark:bg-transparent" *ngIf="this.isForm === true">
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
         <div class="flex-1 flemin-w-0">
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between">
-                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate"
-                    *ngIf="this.isForm === true">
-                    สร้างใบจอง
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    แก้ไขข้อมูลเกม
                 </h2>
+            </div>
+        </div>
+    </div>
 
-                <!-- <div class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="grid gap-4 w-full sm:grid-cols-1">
+            <form class="bg-card rounded-2xl md:shadow overflow-hidden px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
+                [formGroup]="editForm">
+                <span
+                    class="text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-500">
+                    ข้อมูลเกม
+                </span>
+                <div class="-mx-3 md:flex mb-6">
+
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                            <mat-label>ชื่อเกม</mat-label>
+                            <input matInput formControlName="name">
+                            <!-- <mat-hint>This is a hint text</mat-hint> -->
+                        </mat-form-field>
+                    </div>
+
+                    <div class="md:w-full px-3">
+                        <mat-form-field class="w-full">
+                            <mat-label>หมวดหมู่เกม</mat-label>
+                            <mat-select formControlName="game_categorie_id">
+                                <mat-option *ngFor="let category of categories" [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>                        
+                    </div>
+
+                    <div class="md:w-1/2 px-3">
+                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                            <mat-label>show_step</mat-label>
+                            <input matInput formControlName="show_step">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="md:w-full px-3">
+                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                            <mat-label>brand</mat-label>
+                            <input matInput formControlName="brand" readonly>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="flex justify-center md:w-1/2 px-3" *ngIf="this.url_image">
+                        <img class="object-cover h-44 w-auto border-2 border-gray-50 rounded-sm"
+                            src="{{this.url_image}}">
+                        <!-- <img  class="object-contain h-44 w-auto" src="assets/images/no_image.png"> -->
+                    </div>
+                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
+                        <ngx-dropzone (change)="onSelect($event)">
+                            <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
+                            <div *ngFor="let f of files">
+                                <ngx-dropzone-image-preview [file]="f" [removable]="true"
+                                    (removed)="onRemove(f)"></ngx-dropzone-image-preview>
+                            </div>
+                        </ngx-dropzone>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-2">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="onSubmit()">
                         บันทึก
                     </button>
-                    <button class="px-6 ml-3" mat-flat-button [color]="'warn'" (click)="onBack()">
+                    <button class="px-6 ml-3" mat-flat-button [color]="'warn'" (click)="backTo()">
                         ยกเลิก
                     </button>
-                </div> -->
-            </div>
+                </div>
+            </form>
         </div>
+
     </div>
    
-    <!-- Main -->
-    <div class="flex-auto p-6 sm:p-10">
-        <div class="grid gap-4 w-full sm:grid-cols-1 md:grid-cols-1 bg-card rounded-lg">
-            
-            <form [formGroup]="formData">
-                <div class="flex md:flex-row flex-col">
-                    <div class="flex flex-col mx-3 md:flex mb-6 w-full md:w-1/2">
-                        
-                        
-
-                        
-                        <span
-                            class="px-4 text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-500">
-                            <p>
-                                ประเภทลูกค้า : <span
-                                    class="px-6 text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-900">
-                                    {{this.formData.value.type ?? '-'}}</span>
-                            </p>
-                        </span>
-                        <div class="w-full px-3 mb-6 md:mb-0">
-                            <mat-form-field class="w-full">
-                                <mat-label>ชื่อ - นามสกุล (ลูกค้า)</mat-label>
-                                <input matInput placeholder="ชื่อ - นามสกุล" [formControlName]="'customer_name'"
-                                    readonly>
-                            </mat-form-field>
-                        </div>
-                        <div class="w-full px-3 mb-6 md:mb-0 flex flex-col md:flex-row gap-2">
-                            <mat-form-field class="w-full md:w-1/2">
-                                <mat-label>เบอร์ติดต่อ</mat-label>
-                                <input matInput placeholder="เบอร์ติดต่อ" [formControlName]="'phone'" readonly>
-                            </mat-form-field>
-                            <mat-form-field class="w-full md:w-1/2">
-                                <mat-label>เลขประจำตัวประชาชน</mat-label>
-                                <input matInput placeholder="เลขประจำตัวประชาชน" [formControlName]="'idcard'" readonly>
-                            </mat-form-field>
-                        </div>
-                        <div class="w-full px-3 mb-6 md:mb-0">
-                            <mat-form-field class="w-full">
-                                <mat-label>ที่อยู่</mat-label>
-                                <textarea matInput [placeholder]="'กรอกข้อมูลที่อยู่'" [rows]="5"
-                                    formControlName="address" readonly></textarea>
-                                <mat-icon class="icon-size-5" matPrefix>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                        aria-hidden="true" fit="" height="100%" width="100%"
-                                        preserveAspectRatio="xMidYMid meet" focusable="false">
-                                        <path fill-rule="evenodd"
-                                            d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"
-                                            clip-rule="evenodd"></path>
-                                    </svg></mat-icon>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex md:flex-row flex-col w-full px-3 mb-6 md:mb-0 gap-2">
-                            <!-- <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-2/4">
-                                <mat-label>เลือกยี่ห้อ</mat-label>
-                                <mat-select formControlName="brand_id" (selectionChange)="selectBrand($event.value)">
-                                    <mat-option *ngFor="let item of brandData;" [value]="item.id">
-                                        {{item.name}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field> -->
-                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-4/4">
-                                <mat-label>เลือกยี่ห้อ</mat-label>
-                                <input matInput [formControl]="brandFilter" [matAutocomplete]="brandAutoComplete"
-                                    placeholder="ค้นหายี่ห้อรถ" />
-                                <mat-autocomplete #brandAutoComplete="matAutocomplete"
-                                    (optionSelected)="onSelectBrand($event.option.value, 'manual')">
-                                    <mat-option *ngFor="let item of filterBrand | async" [value]="item.name">
-                                        {{item.name}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                           
-                        </div>
-                        <div class="w-full px-3 mb-6 md:mb-0">
-                           
-                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-4/4">
-                                <mat-label>เลือกรถ</mat-label>
-                                <input matInput [formControl]="carFilter" [matAutocomplete]="carAutoComplete"
-                                    placeholder="ค้นหารถ" />
-                                <mat-autocomplete #carAutoComplete="matAutocomplete"
-                                    (optionSelected)="selectProduct($event.option.value)">
-                                    <mat-option *ngFor="let item of filterCar | async" [value]="item">
-                                    ทะเบียน :  {{item.license_plate}} , {{item.name}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </div>
-
-                        
-                        
-
-                        
-                       
-                        
-                    </div>
-                    
-                </div>
-                
-            </form>
-            <div class="flex justify-center m-4">
-                <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="onSubmit()">
-                    บันทึก
-                </button>
-                <button class="px-6 ml-3" mat-flat-button [color]="'warn'" (click)="onBack()">
-                    ยกเลิก
-                </button>
-            </div>
-        </div>
-        <!-- {{this.formData.value | json}} -->
-
-    </div>
 </div>

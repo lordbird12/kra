@@ -74,7 +74,7 @@ export class FormDialogComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        localStorage.setItem('user', JSON.stringify({ brand: 'K', type: 'Example Type' }));
+        // localStorage.setItem('user', JSON.stringify({ brand: 'K', type: 'Example Type' }));
 
         // สร้าง Reactive Form
         this.addForm = this.formBuilder.group({
