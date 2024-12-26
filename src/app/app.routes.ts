@@ -255,6 +255,11 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/sales/page.routes'),
                     },
                     {
+                        path: 'order',
+                        loadChildren: () =>
+                            import('app/modules/admin/order/page.routes'),
+                    },
+                    {
                         path: 'time-attendance',
                         loadChildren: () =>
                             import(
