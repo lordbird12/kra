@@ -162,101 +162,8 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-    {
-        id: 'sales',
-        title: 'จัดการคำสั่งซื้อ',
-        subtitle: 'ขัอมูลเกี่ยวกับระบบ',
-        type: 'group',
-        icon: 'heroicons_outline:home',
-        children: [
-            {
-                id: 'sales.list',
-                title: 'คำสั่งซื้อ',
-                type: 'basic',
-                icon: 'checklist',
-                link: '/admin/sales/list',
-            },
-            {
-                id: 'promotion.list',
-                title: 'โปรโมชั่น',
-                type: 'basic',
-                icon: 'heroicons_mini:bolt',
-                link: '/admin/promotion/list',
-            },
-            {
-                id: 'discount.list',
-                title: 'ส่วนลดโปรโมชั่น',
-                type: 'basic',
-                icon: 'heroicons_mini:scale',
-                link: '/admin/discount/list',
-            },
-            {
-                id: 'client.list',
-                title: 'ลูกค้าของเรา',
-                type: 'basic',
-                icon: 'heroicons_mini:user-group',
-                link: '/admin/customers/list',
-            },
-            {
-                id: 'claim.list',
-                title: 'ประวัติการเคลม',
-                type: 'basic',
-                icon: 'history',
-                link: '/admin/cleam/list',
-            },
-            // {
-            //     id: 'payment.list',
-            //     title: 'การผ่อนชำระ',
-            //     type: 'basic',
-            //     icon: 'align_horizontal_left',
-            //     link: '/admin/payment/list',
-            // },
-        ],
-    },
-    {
-        id: 'จัดการผู้เกี่ยวข้อง',
-        title: 'จัดการข้อมูลผู้เกี่ยวข้อง',
-        subtitle: 'ขัอมูลเกี่ยวกับระบบ',
-        type: 'group',
-        icon: 'heroicons_outline:home',
-        children: [
-            {
-                id: 'supplier.list',
-                title: 'ผู้จำหน่าย',
-                type: 'basic',
-                icon: 'mat_outline:supervised_user_circle',
-                link: '/admin/supplier/list',
-            },
-            {
-                id: 'finance.list',
-                title: 'ไฟแนนซ์',
-                type: 'basic',
-                icon: 'heroicons_mini:building-office',
-                link: '/admin/finance/list',
-            },
-            {
-                id: 'broker.list',
-                title: 'ตัวแทนนายหน้า',
-                type: 'basic',
-                icon: 'mat_outline:safety_divider',
-                link: '/admin/broker/list',
-            },
-            {
-                id: 'insurance.list',
-                title: 'ประกันภัย',
-                type: 'basic',
-                icon: 'mat_outline:health_and_safety',
-                link: '/admin/insurance/list',
-            },
-            {
-                id: 'garage.list',
-                title: 'อู่นอก',
-                type: 'basic',
-                icon: 'mat_outline:home',
-                link: '/admin/garage/list',
-            }
-        ],
-    },
+   
+   
     // {
     //     id: 'apps',
     //     title: 'จัดการโปรแกรมระบบ',
@@ -340,7 +247,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     //         // },
     //     ],
     // },
-    
+
     {
         id: 'products',
         title: 'จัดการประเภทรายการ',
