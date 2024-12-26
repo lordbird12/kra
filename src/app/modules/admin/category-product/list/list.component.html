@@ -29,7 +29,6 @@
                 <thead>
                     <tr>
                         <th class="w-[10px]">ลำดับ</th>
-                        <th>ชื่อย่อ</th>
                         <th>ชื่อ</th>
                         <!-- <th>สร้างโดย</th> -->
                         <th>วันที่สร้าง</th>
@@ -39,7 +38,6 @@
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
                         <td>{{ pages.begin + (i + 1) }}</td>
-                        <td>{{ item.prefix ? item.prefix : "-" }}</td>
                         <td>{{ item.name ? item.name : "-" }}</td>
                         <!-- <td>{{ item.create_by ? item.create_by : "-" }}</td> -->
                         <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>

@@ -250,17 +250,6 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/game/page.routes'),
                     },
                     {
-                        path: 'category-item',
-                        loadChildren: () =>
-                            import('app/modules/admin/category-item/page.routes'),
-                    },
-                    {
-                        path: 'category-game',
-                        loadChildren: () =>
-                            import('app/modules/admin/category-game/page.routes'),
-                    },
-
-                    {
                         path: 'sales',
                         loadChildren: () =>
                             import('app/modules/admin/sales/page.routes'),

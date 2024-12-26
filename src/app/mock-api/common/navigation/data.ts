@@ -117,7 +117,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     // },
     {
         id: 'products',
-        title: 'จัดการคลังและสินค้า',
+        title: 'จัดการประเภทรายการ',
         subtitle: 'ขัอมูลเกี่ยวกับระบบ',
         type: 'group',
         icon: 'heroicons_outline:home',
@@ -129,13 +129,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //         icon: 'heroicons_outline:home-modern',
             //         link: '/admin/warehouse/list',
             //     },
-            {
-                id: 'products.brand',
-                title: 'ยี่ห้อรถ',
-                type: 'basic',
-                icon: 'heroicons_outline:building-office-2',
-                link: '/admin/brand/list',
-            },
+            // {
+            //     id: 'products.brand',
+            //     title: 'ยี่ห้อรถ',
+            //     type: 'basic',
+            //     icon: 'heroicons_outline:building-office-2',
+            //     link: '/admin/brand/list',
+            // },
             {
                 id: 'products.category-product',
                 title: 'ประเภทรถยนต์',
