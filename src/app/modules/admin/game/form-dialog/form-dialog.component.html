@@ -11,17 +11,36 @@
                             <input matInput [placeholder]="'กรุณาระบุชื่อเกม'" formControlName="name">
                         </mat-form-field>
                     </div>
+
+                    <div class="md:w-full px-3">
+                        <mat-form-field class="w-full">
+                            <mat-label>หมวดหมู่เกม</mat-label>
+                            <mat-select formControlName="game_categorie_id">
+                                <mat-option *ngFor="let category of categories" [value]="category.id">
+                                    {{ category.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="md:w-full px-3">
+                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                            <mat-label>show_step</mat-label>
+                            <input matInput [placeholder]="'กรุณาระบุshow_step'" formControlName="show_step">
+                        </mat-form-field>
+                    </div>
                     <div class="md:w-full px-3">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                             <mat-label>brand</mat-label>
-                            <input matInput [placeholder]="'กรุณาระบุรายละเอียด'" formControlName="detail">
+                            <input matInput [placeholder]="'กรุณาระบุbrand'" formControlName="brand">
                         </mat-form-field>
                     </div>
                     <div class="items-center md:w-full px-3 mt-2">
-                        <ngx-dropzone (change)="onSelect($event)" >
+                        <ngx-dropzone (change)="onSelect($event)">
                             <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
                             <div *ngFor="let f of files">
-                                <ngx-dropzone-image-preview [file]="f" [removable]="true" (removed)="onRemove(f)"></ngx-dropzone-image-preview>
+                                <ngx-dropzone-image-preview [file]="f" [removable]="true"
+                                    (removed)="onRemove(f)"></ngx-dropzone-image-preview>
                             </div>
                         </ngx-dropzone>
                     </div>

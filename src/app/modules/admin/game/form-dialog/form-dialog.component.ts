@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -52,6 +52,9 @@ export class FormDialogComponent implements OnInit {
     isLoading: boolean = false;
     positions: any[];
     flashMessage: 'success' | 'error' | null = null;
+
+    categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
+
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private formBuilder: FormBuilder,
@@ -66,25 +69,38 @@ export class FormDialogComponent implements OnInit {
 
         this.addForm = this.formBuilder.group({
             id: '',
-            name: [],
-            detail: '',
+            name: ['', Validators.required],
+            game_categorie_id: ['', Validators.required],
+            show_step: '',
             image: [],
-            status: '',
+            brand: '',
         });
+        
     }
+    
 
     ngOnInit(): void {
-
         if (this.data) {
-            this.addForm.patchValue({
-                ...this.data
-            })
+            this.addForm.patchValue({ ...this.data });
         }
-
-
+    
+        this.loadCategories();
+        console.log('Initial form value:', this.addForm.value);
     }
+    
 
 
+    loadCategories(): void {
+        this._service.getGameCategories().subscribe({
+            next: (categories: any) => {
+                console.log('Categories:', categories); // ตรวจสอบค่าที่ได้
+                this.categories = Array.isArray(categories) ? categories : []; // แปลงให้เป็นอาเรย์ถ้าจำเป็น
+            },
+            error: (err) => console.error('Failed to load categories', err),
+        });
+    }
+    
+    
 
     onSaveClick(): void {
         this.flashMessage = null;

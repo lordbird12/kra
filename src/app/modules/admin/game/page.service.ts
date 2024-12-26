@@ -203,6 +203,18 @@ export class PageService {
             );
     }
 
+    getGameCategories(): Observable<any[]> {
+        return this._httpClient.get<any>(`${environment.baseURL}/api/get_game_category`).pipe(
+            map((response) => response.data || []), // ใช้ `data` ที่เป็นอาเรย์
+            catchError((error) => {
+                console.error('Error fetching categories:', error);
+                return of([]);
+            })
+        );
+    }
+    
+    
+    
 
     getPageBrandModel(dataTablesParameters: any): Observable<DataTablesResponse> {
         return this._httpClient
