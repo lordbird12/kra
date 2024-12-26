@@ -72,6 +72,9 @@ export class EditComponent implements OnInit {
   /**
    * Constructor
    */
+
+  categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
+
   constructor(
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -86,9 +89,10 @@ export class EditComponent implements OnInit {
     this.editForm = this._formBuilder.group({
       id: '',
       name: [],
-      detail: '',
+      game_categorie_id: [''],
+      show_step: '',
+      brand: '',
       image: [],
-      status: '',
     })
   }
 
@@ -101,8 +105,19 @@ export class EditComponent implements OnInit {
       })
       this.url_image = this.itemData.image;
     })
-    this.loadTable();
 
+    // โหลดหมวดหมู่เกม
+    this.loadCategories();
+
+  }
+
+  loadCategories(): void {
+    this._Service.getGameCategories().subscribe({
+      next: (categories: any) => {
+        this.categories = Array.isArray(categories) ? categories : [];
+      },
+      error: (err) => console.error('Failed to load categories', err),
+    });
   }
 
   onSubmit(): void {
@@ -172,53 +187,7 @@ export class EditComponent implements OnInit {
       }
     })
   }
-
-  pages = { current_page: 1, last_page: 1, per_page: 10, begin: 0 };
-  loadTable(): void {
-    const that = this;
-    this.dtOptions = {
-      pagingType: "full_numbers",
-      pageLength: 25,
-      serverSide: true,
-      processing: true,
-      language: {
-        url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/th.json",
-      },
-      ajax: (dataTablesParameters: any, callback) => {
-        dataTablesParameters.status = null;
-        dataTablesParameters.brand_id = +this.Id;
-        that._Service.getPageBrandModel(dataTablesParameters).subscribe((resp: any) => {
-          this.dataRow = resp.data;
-          this.pages.current_page = resp.current_page;
-          this.pages.last_page = resp.last_page;
-          this.pages.per_page = resp.per_page;
-          if (resp.current_page > 1) {
-            this.pages.begin =
-              parseInt(resp.per_page) *
-              (parseInt(resp.current_page) - 1);
-          } else {
-            this.pages.begin = 0;
-          }
-
-          callback({
-            recordsTotal: resp.total,
-            recordsFiltered: resp.total,
-            data: [],
-          });
-          this._changeDetectorRef.markForCheck();
-        });
-      },
-      columns: [
-        { data: 'action', orderable: false },
-        { data: 'No' },
-        { data: 'name' },
-        { data: 'detail' },
-        { data: 'create_by' },
-        { data: 'created_at' },
-
-      ],
-    };
-  }
+  
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
@@ -231,11 +200,8 @@ export class EditComponent implements OnInit {
     return this.formFieldHelpers.join(' ');
   }
 
-  editElement(data: any) {
-    this._router.navigate(['admin/brand/edit-brand-model/' + data.id])
-  }
   backTo() {
-    this._router.navigate(['admin/brand/list'])
+    this._router.navigate(['admin/game/list'])
   }
 
   files: File[] = [];
@@ -274,36 +240,5 @@ export class EditComponent implements OnInit {
     });
   }
 
-  delete(itemid: any) {
-    const confirmation = this._fuseConfirmationService.open({
-      title: 'ลบข้อมูล',
-      message: 'คุณต้องการลบข้อมูลใช่หรือไม่ ?',
-      icon: {
-        show: true,
-        name: 'heroicons_outline:exclamation-triangle',
-        color: 'warning',
-      },
-      actions: {
-        confirm: {
-          show: true,
-          label: 'ยืนยัน',
-          color: 'warn',
-        },
-        cancel: {
-          show: true,
-          label: 'ยกเลิก',
-        },
-      },
-      dismissible: true,
-    });
-    confirmation.afterClosed().subscribe((result) => {
-      if (result === 'confirmed') {
-        this._Service.deleteBrandModel(itemid).subscribe((resp) => {
-          this.rerender();
-        });
-      }
-      error: (err: any) => { };
-    });
-  }
 }
 

@@ -77,7 +77,7 @@ export class PageService {
 
     update(data: any): Observable<any> {
         return this._httpClient
-            .post<any>(environment.baseURL + '/api/update_brand', data)
+            .post<any>(environment.baseURL + '/api/update_game', data)
             .pipe(
                 tap((result) => {
                     this._data.next(result);
@@ -113,7 +113,7 @@ export class PageService {
     }
     delete(id: any): Observable<any> {
         return this._httpClient.delete<any>(
-            environment.baseURL + '/api/brand/' + id,
+            environment.baseURL + '/api/game/' + id,
         );
     }
     deleteBrandModel(id: any): Observable<any> {
@@ -152,7 +152,7 @@ export class PageService {
 
     getById(id: string): Observable<any> {
         return this._httpClient
-            .get<any>(environment.baseURL + '/api/brand/' + id)
+            .get<any>(environment.baseURL + '/api/game/' + id)
             .pipe(
                 tap((result) => {
                     this._data.next(result);
