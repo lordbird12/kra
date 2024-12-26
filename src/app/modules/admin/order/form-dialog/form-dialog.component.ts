@@ -74,32 +74,39 @@ export class FormDialogComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        // localStorage.setItem('user', JSON.stringify({ brand: 'K', type: 'Example Type' }));
-
-        // สร้าง Reactive Form
-        this.addForm = this.formBuilder.group({
-            page_categorie_id: [],
-            name: ['', Validators.required],
-            show_step: [],
-            type: [],
-            brand: [''],
-            image: ''
-        });
-    
-        // ดึงค่าจาก localStorage
-        const value = localStorage.getItem('user'); // ดึงข้อมูลที่เก็บไว้ใน key "user"
-        console.log('Raw localStorage value:', value); // แสดงค่า raw จาก localStorage
-        if (value) {
-            const jsonObject = JSON.parse(value); // แปลง string เป็น JSON object
-            console.log('Parsed localStorage object:', jsonObject); // แสดง JSON object
-    
-            const brandValue = jsonObject.brand || ''; // ตรวจสอบว่ามี key "brand" หรือไม่
-            console.log('Brand value:', brandValue); // แสดงค่า brand
-    
-            this.addForm.patchValue({ brand: brandValue }); // ตั้งค่าในฟอร์ม
-            console.log('Form value after patch:', this.addForm.value); // แสดงค่าฟอร์มหลังตั้งค่า
-        }
-    }
+      // สร้าง Reactive Form
+      this.addForm = this.formBuilder.group({
+          page_categorie_id: [],
+          name: ['', Validators.required],
+          show_step: [],
+          type: [],
+          brand: [''],
+          image: ''
+      });
+  
+      // ดึงค่าจาก localStorage
+      const value = localStorage.getItem('user'); // ดึงข้อมูลที่เก็บไว้ใน key "user"
+      console.log('Raw localStorage value:', value); // แสดงค่า raw จาก localStorage
+  
+      if (value) {
+          try {
+              const jsonObject = JSON.parse(value); // แปลง string เป็น JSON object
+              console.log('Parsed localStorage object:', jsonObject); // แสดง JSON object
+  
+              const brandValue = jsonObject.brand || ''; // ตรวจสอบว่ามี key "brand" หรือไม่
+              console.log('Brand value:', brandValue); // แสดงค่า brand
+  
+              this.addForm.patchValue({ brand: brandValue }); // ตั้งค่าในฟอร์ม
+              console.log('Form value after patch:', this.addForm.value); // แสดงค่าฟอร์มหลังตั้งค่า
+          } catch (error) {
+              console.error('Error parsing localStorage value:', error);
+              alert('เกิดข้อผิดพลาดในการแปลงข้อมูลจาก localStorage');
+          }
+      } else {
+          console.warn('ไม่มีข้อมูลใน localStorage สำหรับ key "user"');
+      }
+  }
+  
 
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
