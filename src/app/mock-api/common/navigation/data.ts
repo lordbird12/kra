@@ -133,6 +133,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/game/list',
             },
             {
+                id: 'sales.list',
+                title: 'ออเดอร์',
+                type: 'basic',
+                icon: 'checklist',
+                link: '/admin/order/list',
+            },
+            {
                 id: 'products.category-product',
                 title: 'ประเภทรถยนต์',
                 type: 'basic',
@@ -301,13 +308,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'checklist',
                 link: '/admin/sales/list',
             },
-            {
-                id: 'sales.list',
-                title: 'ออเดอร์',
-                type: 'basic',
-                icon: 'checklist',
-                link: '/admin/order/list',
-            },
+            
             {
                 id: 'promotion.list',
                 title: 'โปรโมชั่น',
