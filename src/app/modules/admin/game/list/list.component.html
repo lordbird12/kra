@@ -28,17 +28,35 @@
             <table datatable [dtOptions]="dtOptions" class="table row-border hover w-full bg-white whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="w-[100px]">จัดการ</th>
                         <th class="w-[10px]">ลำดับ</th>
-                        <th>ชื่อเกม</th>
-                        <th>รายละเอียด</th>
                         <th>รูป</th>
-                        <th>สร้างโดย</th>
+                        <th>name</th>
+                        <th>brand</th>
+                        <th>game_categorie_id</th>
+                        <th>show_step</th>
                         <th>วันที่สร้าง</th>
+                        <th class="w-[100px]">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
+                        
+                        <td>{{ pages.begin + (i + 1) }}</td>
+
+                        <td>  <button mat-icon-button color="accent" (click)="showPicture(item.image)">
+                            <mat-icon>image</mat-icon>
+                        </button></td>
+
+                        <td>{{ item.name ? item.name : "-" }}</td>
+
+                        <td>{{ item.brand ? item.brand : "-" }}</td>
+
+                        <td>{{ item.game_categorie_id ? item.game_categorie_id : "-" }}</td>
+
+                        <td>{{ item.show_step ? item.show_step : "-" }}</td>
+                    
+                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
+
                         <td>
                             <button mat-icon-button color="accent" (click)="editElement(item)">
                                 <mat-icon>edit</mat-icon>
@@ -47,14 +65,6 @@
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>
-                        <td>{{ pages.begin + (i + 1) }}</td>
-                        <td>{{ item.name ? item.name : "-" }}</td>
-                        <td>{{ item.detail ? item.detail : "-" }}</td>
-                        <td>  <button mat-icon-button color="accent" (click)="showPicture(item.image)">
-                            <mat-icon>image</mat-icon>
-                        </button></td>
-                        <td>{{ item.create_by ? item.create_by : "-" }}</td>
-                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
                     </tr>
                 </tbody>
                 <tbody *ngIf="dataRow?.length == 0">
