@@ -51,6 +51,203 @@ export const defaultNavigation: FuseNavigationItem[] = [
 
         ],
     },
+
+    // {
+    //     id: 'finance',
+    //     title: 'จัดการเงินเดือน',
+    //     subtitle: 'ขัอมูลเกี่ยวกับเงินเดือน',
+    //     type: 'group',
+    //     icon: 'heroicons_outline:home',
+    //     children: [
+
+    //         {
+    //             id: 'finance.payroll',
+    //             title: 'เงินเดือน',
+    //             type: 'basic',
+    //             icon: '10k',
+    //             link: '/admin/payroll/list',
+    //         },
+    //         {
+    //             id: 'finance.time',
+    //             title: 'ข้อมูลลงเวลา',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:clock',
+    //             link: '/admin/time/list',
+    //         },
+    //         {
+    //             id: 'finance.income',
+    //             title: 'ประเภทเงินได้',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:currency-dollar',
+    //             link: '/admin/income/list',
+    //         },
+    //         {
+    //             id: 'finance.deduct',
+    //             title: 'ประเภทเงินหัก',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:squares-plus',
+    //             link: '/admin/deduct/list',
+    //         },
+    //         {
+    //             id: 'finance.income-paid',
+    //             title: 'เงินได้ - เงินหัก',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:list-bullet',
+    //             link: '/admin/income-deduct/list',
+    //         },
+    //         {
+    //             id: 'finance.income-paid',
+    //             title: 'ตั้งค่ามาสาย',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:list-bullet',
+    //             link: '/admin/late/list',
+    //         },
+    //     ],
+    // },
+    {
+        id: 'products',
+        title: 'จัดการคลังและสินค้า',
+        subtitle: 'ขัอมูลเกี่ยวกับระบบ',
+        type: 'group',
+        icon: 'heroicons_outline:home',
+        children: [
+            //     {
+            //         id: 'products.warehouse',
+            //         title: 'คลังสินค้า',
+            //         type: 'basic',
+            //         icon: 'heroicons_outline:home-modern',
+            //         link: '/admin/warehouse/list',
+            //     },
+            {
+                id: 'products.brand',
+                title: 'ยี่ห้อรถ',
+                type: 'basic',
+                icon: 'heroicons_outline:building-office-2',
+                link: '/admin/brand/list',
+            },
+            {
+                id: 'products.game',
+                title: 'Game',
+                type: 'basic',
+                icon: 'heroicons_outline:building-office-2',
+                link: '/admin/game/list',
+            },
+            {
+                id: 'products.category-product',
+                title: 'ประเภทรถยนต์',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/admin/category-product/list',
+            },
+            {
+                id: 'products.product',
+                title: 'รถยนต์',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/admin/product/list',
+            },
+            {
+                id: 'category-attribute.list',
+                title: 'ประเภทอะไหล่',
+                type: 'basic',
+                icon: 'heroicons_outline:wrench-screwdriver',
+                link: '/admin/category-attribute/list',
+            },
+            {
+                id: 'spare-part.list',
+                title: 'อะไหล่',
+                type: 'basic',
+                icon: 'heroicons_outline:wrench',
+                link: '/admin/product-attribute/list',
+            },
+        ],
+    },
+   
+   
+    // {
+    //     id: 'apps',
+    //     title: 'จัดการโปรแกรมระบบ',
+    //     subtitle: 'ขัอมูลเกี่ยวกับระบบ',
+    //     type: 'group',
+    //     icon: 'heroicons_outline:home',
+    //     children: [
+    //         {
+    //             id: 'apps.report',
+    //             title: 'รายงาน',
+    //             type: 'collapsable',
+    //             icon: 'heroicons_outline:document-text',
+    //             children: [
+    //                 {
+    //                     id: 'apps.report.stock-vat',
+    //                     title: 'สต๊อครวมภาษี',
+    //                     type: 'basic',
+    //                     link: '/admin/report-stock-vat/list',
+    //                     exactMatch: true,
+    //                 },
+    //                 {
+    //                     id: 'apps.report.stock-card',
+    //                     title: 'สินค้าคงเหลือ',
+    //                     type: 'basic',
+    //                     link: '/admin/report-stock-card/list',
+    //                     exactMatch: true,
+    //                 },
+    //             ],
+    //         },
+    //         // {
+    //         //     id: 'apps.file-manager',
+    //         //     title: 'ไฟล์เอกสาร',
+    //         //     type: 'basic',
+    //         //     icon: 'heroicons_outline:cloud',
+    //         //     link: '/apps/file-manager',
+    //         // },
+    //         // {
+    //         //     id: 'apps.help-center',
+    //         //     title: 'ศูนย์ช่วยเหลือ',
+    //         //     type: 'collapsable',
+    //         //     icon: 'heroicons_outline:information-circle',
+    //         //     link: '/apps/help-center',
+    //         //     children: [
+    //         //         {
+    //         //             id: 'apps.help-center.home',
+    //         //             title: 'Home',
+    //         //             type: 'basic',
+    //         //             link: '/apps/help-center',
+    //         //             exactMatch: true,
+    //         //         },
+    //         //         {
+    //         //             id: 'apps.help-center.faqs',
+    //         //             title: 'FAQs',
+    //         //             type: 'basic',
+    //         //             link: '/apps/help-center/faqs',
+    //         //         },
+    //         //         {
+    //         //             id: 'apps.help-center.guides',
+    //         //             title: 'Guides',
+    //         //             type: 'basic',
+    //         //             link: '/apps/help-center/guides',
+    //         //         },
+    //         //         {
+    //         //             id: 'apps.help-center.support',
+    //         //             title: 'Support',
+    //         //             type: 'basic',
+    //         //             link: '/apps/help-center/support',
+    //         //         },
+    //         //     ],
+    //         // },
+    //         // {
+    //         //     id: 'apps.mailbox',
+    //         //     title: 'กล่องจดหมาย',
+    //         //     type: 'basic',
+    //         //     icon: 'heroicons_outline:envelope',
+    //         //     link: '/apps/mailbox',
+    //         //     badge: {
+    //         //         title: '27',
+    //         //         classes: 'px-2 bg-pink-600 text-white rounded-full',
+    //         //     },
+    //         // },
+    //     ],
+    // },
+
     {
         id: 'products',
         title: 'จัดการประเภทรายการ',
@@ -59,15 +256,9 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:home',
         children: [
 
-            // {
-            //     id: 'products.brand',
-            //     title: 'ยี่ห้อรถ',
-            //     type: 'basic',
-            //     icon: 'heroicons_outline:building-office-2',
-            //     link: '/admin/brand/list',
-            // },
+            
             {
-                id: 'products.category-product',
+                id: 'products.category-item',
                 title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
@@ -81,7 +272,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/product/list',
             },
             {
-                id: 'category-attribute.list',
+                id: 'category-attribute.game',
                 title: 'ประเภท Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench-screwdriver',

@@ -245,6 +245,11 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/brand-model/page.routes'),
                     },
                     {
+                        path: 'game',
+                        loadChildren: () =>
+                            import('app/modules/admin/game/page.routes'),
+                    },
+                    {
                         path: 'sales',
                         loadChildren: () =>
                             import('app/modules/admin/sales/page.routes'),
