@@ -65,7 +65,6 @@ export class FormDialogComponent implements OnInit{
     ngOnInit(): void {
         this.addForm = this.formBuilder.group({
             name: [],
-            prefix: [],
         });
 
     }
