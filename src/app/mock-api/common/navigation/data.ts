@@ -138,7 +138,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             // },
             {
                 id: 'products.category-product',
-                title: 'ประเภทรถยนต์',
+                title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
                 link: '/admin/category-product/list',
