@@ -48,7 +48,7 @@ export class PageService {
 
     create(data: FormData): Observable<any> {
         return this._httpClient
-            .post<any>(environment.baseURL + '', data)
+            .post<any>(environment.baseURL + '/api/game', data)
             .pipe(
                 tap((result) => {
                     this._data.next(result);

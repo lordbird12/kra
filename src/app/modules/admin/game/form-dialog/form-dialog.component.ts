@@ -73,7 +73,7 @@ export class FormDialogComponent implements OnInit {
             game_categorie_id: ['', Validators.required], // หมวดหมู่เกม
             show_step: '',               // ขั้นตอน
             image: '',                   // รูปภาพ
-            brand: '',                   // แบรนด์
+            brand: ['']                 // แบรนด์
         });
 
 
@@ -87,6 +87,15 @@ export class FormDialogComponent implements OnInit {
 
         this.loadCategories();
         console.log('Initial form value:', this.addForm.value);
+        
+        // ดึงข้อมูล `brand` จาก localStorage
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            const user = JSON.parse(userData); // แปลง string เป็น JSON object
+            this.addForm.patchValue({
+                brand: user.brand // ตั้งค่า brand อัตโนมัติ
+            });
+        }
     }
 
 

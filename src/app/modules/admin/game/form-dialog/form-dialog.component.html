@@ -29,12 +29,14 @@
                             <input matInput [placeholder]="'กรุณาระบุshow_step'" formControlName="show_step">
                         </mat-form-field>
                     </div>
+                    
                     <div class="md:w-full px-3">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                             <mat-label>brand</mat-label>
-                            <input matInput [placeholder]="'กรุณาระบุbrand'" formControlName="brand">
+                            <input matInput [placeholder]="'กรุณาระบุbrand'" formControlName="brand" readonly>
                         </mat-form-field>
                     </div>
+                    
                     <div class="items-center md:w-full px-3 mt-2">
                         <ngx-dropzone (change)="onSelect($event)">
                             <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
