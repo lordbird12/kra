@@ -255,6 +255,11 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/sales/page.routes'),
                     },
                     {
+                        path: 'order',
+                        loadChildren: () =>
+                            import('app/modules/admin/order/page.routes'),
+                    },
+                    {
                         path: 'time-attendance',
                         loadChildren: () =>
                             import(
@@ -330,16 +335,17 @@ export const appRoutes: Route[] = [
                         loadChildren: () =>
                             import('app/modules/admin/category-product/page.routes'),
                     },
-                    // {
-                    //     path: 'category-item',
-                    //     loadChildren: () =>
-                    //         import('app/modules/admin/category-item/page.routes'),
-                    // },
-                    // {
-                    //     path: 'category-game',
-                    //     loadChildren: () =>
-                    //         import('app/modules/admin/category-game/page.routes'),
-                    // },
+                    {
+                        path: 'category-item',
+                        loadChildren: () =>
+                            import('app/modules/admin/category-item/page.routes'),
+                    },
+                    {
+                        path: 'category-game',
+                        loadChildren: () =>
+                            import('app/modules/admin/category-game/page.routes'),
+                    },
+                    
                 ],
             },
         ],

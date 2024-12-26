@@ -1,5 +1,4 @@
 
-
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
@@ -25,8 +24,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.component';
 
 @Component({
-  selector: 'edit-brand',
-  templateUrl: './edit.component.html',
+    selector: 'form-product',
+    templateUrl: './form.component.html',
+    styleUrls: ['./form.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
@@ -52,7 +52,7 @@ import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.c
   ],
 
 })
-export class EditComponent implements OnInit {
+export class FormComponent implements OnInit {
 
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
@@ -89,9 +89,10 @@ export class EditComponent implements OnInit {
     this.editForm = this._formBuilder.group({
       id: '',
       name: [],
-      game_categorie_id: [''],
+      gpage_categorie_id: [''],
       show_step: '',
       brand: '',
+      type: '',
       image: [],
     })
   }
@@ -112,7 +113,7 @@ export class EditComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this._Service.getGameCategories().subscribe({
+    this._Service.getpageCategories().subscribe({
       next: (categories: any) => {
         this.categories = Array.isArray(categories) ? categories : [];
       },
@@ -241,4 +242,3 @@ export class EditComponent implements OnInit {
   }
 
 }
-

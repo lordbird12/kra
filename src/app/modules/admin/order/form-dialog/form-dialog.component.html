@@ -1,0 +1,67 @@
+<div class="md:max-w-lg mx-auto">
+    <h1 mat-dialog-title class="text-xl font-semibold mb-4">เพิ่มสินค้า</h1>
+    <div mat-dialog-content>
+        <form [formGroup]="addForm">
+           
+            <div class="mb-4">
+                <label for="code" class="block text-sm font-medium text-gray-700">รหัสสินออเดอร์</label>
+                <input type="text" id="code" class="mt-1 form-input rounded-md shadow-sm block w-full"
+                    formControlName="page_categorie_id" placeholder="รหัสสินค้า">
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">ชื่อ</label>
+                <input type="text" id="name" class="mt-1 form-input rounded-md shadow-sm block w-full"
+                    formControlName="name" placeholder="ชื่อสินค้า">
+            </div>
+            <div class="mb-4">
+                <label for="number" class="block text-sm font-medium text-gray-700">show_step</label>
+                <input type="number" min="1" max="10" id="number" class="mt-1 form-input rounded-md shadow-sm block w-full"
+                    formControlName="show_step" placeholder="ชื่อสินค้า">
+            </div>
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">ชื่อ</label>
+                <input type="text" id="name" class="mt-1 form-input rounded-md shadow-sm block w-full"
+                    formControlName="name" placeholder="ชื่อสินค้า">
+            </div>
+            <div class="mb-4">
+                <label for="position_id" class="block text-sm font-medium text-gray-700">ประเภท</label>
+                <select id="position_id" class="mt-1 form-select rounded-md shadow-sm block w-full"
+                    formControlName="type" >
+                    <option value="" disabled selected defaultSelected>เลือกประเภท</option>
+                    <option *ngFor="let item of taxType" [value]="item.id">{{item.name}}</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="price" class="block text-sm font-medium text-gray-700">brand</label>
+                <input 
+                    type="text" 
+                    id="price" 
+                    class="mt-1 form-input rounded-md shadow-sm block w-full"
+                    formControlName="brand" 
+                    placeholder="brand"
+                >
+            </div>
+            
+            
+            
+            <div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-gray-700">อัปโหลดรูป</label>
+                <input 
+                    type="file" 
+                    id="image" 
+                    class="mt-1 form-input rounded-md shadow-sm block w-full" 
+                    (change)="onFileSelected($event)" 
+                />
+            </div>
+            
+            
+        </form>
+    </div>
+    <div mat-dialog-actions class="flex justify-end mt-4">
+        <button mat-button class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+            (click)="onSaveClick()">บันทึก</button>
+        &nbsp;
+        <button mat-button class="px-4 py-2 bg-gray-300 text-gray-600 rounded hover:bg-gray-400"
+            (click)="onCancelClick()">ยกเลิก</button>
+    </div>
+</div>
