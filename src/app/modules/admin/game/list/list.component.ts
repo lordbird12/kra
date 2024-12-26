@@ -18,9 +18,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { FormDialogComponent } from '../form-dialog/form-dialog.component';
 import { PageService } from '../page.service';
-import { EditDialogComponent } from '../edit-dialog/edit-dialog.component';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { Router } from '@angular/router';
+import { PictureComponent } from '../../picture/picture.component';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
@@ -50,29 +50,28 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 })
 
 export class ListComponent implements OnInit, AfterViewInit {
+
     @ViewChild(DataTableDirective)
     dtElement!: DataTableDirective;
     isLoading: boolean = false;
+    dataRow: any[] = [];
     dtOptions: DataTables.Settings = {};
     positions: any[];
     // public dataRow: any[];
-    dataRow: any[] = [];
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     constructor(
         private dialog: MatDialog,
+        private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _service: PageService,
-        private _router: Router,
-        private _fuseConfirmationService: FuseConfirmationService,
+        private _router: Router
     ) {
 
-    }
+     }
 
     ngOnInit() {
         this.loadTable();
-        this._service.getPosition().subscribe((resp: any) => {
-            this.positions = resp.data
-        })
+     
     }
 
     ngAfterViewInit(): void {
@@ -82,31 +81,34 @@ export class ListComponent implements OnInit, AfterViewInit {
 
     // เพิ่มเมธอด editElement(element) และ deleteElement(element)
     editElement(element: any) {
-        const dialogRef = this.dialog.open(EditDialogComponent, {
-            width: '500px', // กำหนดความกว้างของ Dialog
-            data: {
-                data: element,
-            } // ส่งข้อมูลเริ่มต้นไปยัง Dialog
-        });
+        this._router.navigate(['/admin/brand/edit/' + element.id])
+        // const dialogRef = this.dialog.open(FormDialogComponent, {
+        //     width: '500px', // กำหนดความกว้างของ Dialog
+        //     data: element
+        // });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.rerender()
-            }
-        });
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
+        //         this.rerender();
+        //         // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
+        //     }
+        // });
     }
     addElement() {
         const dialogRef = this.dialog.open(FormDialogComponent, {
             width: '500px', // กำหนดความกว้างของ Dialog
-
+            maxHeight: '100Vh'
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.rerender()
+
+                this.rerender();
+                // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
             }
         });
     }
+  
 
     pages = { current_page: 1, last_page: 1, per_page: 10, begin: 0 };
     loadTable(): void {
@@ -126,8 +128,10 @@ export class ListComponent implements OnInit, AfterViewInit {
                     this.pages.current_page = resp.current_page;
                     this.pages.last_page = resp.last_page;
                     this.pages.per_page = resp.per_page;
-                    if (parseInt(resp.current_page) > 1) {
-                        this.pages.begin = parseInt(resp.per_page) * (parseInt(resp.current_page) - 1);
+                    if (resp.data.currentPage > 1) {
+                        this.pages.begin =
+                            parseInt(resp.per_page) *
+                            (parseInt(resp.current_page) - 1);
                     } else {
                         this.pages.begin = 0;
                     }
@@ -141,11 +145,13 @@ export class ListComponent implements OnInit, AfterViewInit {
                 });
             },
             columns: [
-                
+                { data: 'action',orderable: false },
                 { data: 'No' },
                 { data: 'name' },
+                { data: 'detail' },
                 { data: 'create_by' },
                 { data: 'created_at' },
+
             ],
         };
     }
@@ -181,10 +187,27 @@ export class ListComponent implements OnInit, AfterViewInit {
             error: (err: any) => {};
         });
     }
+
+    showPicture(imgObject: any): void {
+        this.dialog
+            .open(PictureComponent, {
+                autoFocus: false,
+                data: {
+                    imgSelected: imgObject,
+                },
+            })
+            .afterClosed()
+            .subscribe(() => {
+                // Go up twice because card routes are setup like this; "card/CARD_ID"
+                // this._router.navigate(['./../..'], {relativeTo: this._activatedRoute});
+            });
+    }
+
     rerender(): void {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
             dtInstance.ajax.reload();
         });
     }
 }
+
 
