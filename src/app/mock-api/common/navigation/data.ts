@@ -111,6 +111,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/sales/list',
             },
             {
+                id: 'sales.list',
+                title: 'ออเดอร์',
+                type: 'basic',
+                icon: 'checklist',
+                link: '/admin/order/list',
+            },
+            {
                 id: 'promotion.list',
                 title: 'โปรโมชั่น',
                 type: 'basic',
