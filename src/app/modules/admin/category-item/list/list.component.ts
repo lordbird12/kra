@@ -140,8 +140,7 @@ export class ListComponent implements OnInit, AfterViewInit {
                     this._changeDetectorRef.markForCheck();
                 });
             },
-            columns: [
-                { data: 'action', orderable: false },
+            columns: [              
                 { data: 'No' },
                 { data: 'name' },
                 { data: 'create_by' },

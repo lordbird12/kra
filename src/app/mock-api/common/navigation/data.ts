@@ -137,11 +137,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
             //     link: '/admin/brand/list',
             // },
             {
-                id: 'products.category-product',
+                id: 'products.category-item',
                 title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
-                link: '/admin/category-product/list',
+                link: '/admin/category-item/list',
             },
             {
                 id: 'products.product',

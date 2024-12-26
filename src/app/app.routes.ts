@@ -318,9 +318,9 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/promotion/page.routes'),
                     },
                     {
-                        path: 'category-attribute',
+                        path: 'category-item',
                         loadChildren: () =>
-                            import('app/modules/admin/category-attribute/page.routes'),
+                            import('app/modules/admin/category-item/page.routes'),
                     },
                     {
                         path: 'spare-part',
@@ -328,9 +328,9 @@ export const appRoutes: Route[] = [
                             import('app/modules/admin/spare-part/page.routes'),
                     },
                     {
-                        path: 'category-product',
+                        path: 'category-game',
                         loadChildren: () =>
-                            import('app/modules/admin/category-product/page.routes'),
+                            import('app/modules/admin/category-game/page.routes'),
                     },
                     
                 ],
