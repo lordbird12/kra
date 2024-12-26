@@ -18,13 +18,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             }
         },
         children: [
-            {
-                id: 'admin.comp',
-                title: 'ข้อมูลบริษัท',
-                type: 'basic',
-                icon: 'heroicons_outline:building-office-2',
-                link: '/admin/companie/list',
-            },
+
             {
                 id: 'admin.department',
                 title: 'แผนกงาน',
@@ -53,113 +47,49 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:key',
                 link: '/admin/permission/list',
             },
-            // {
-            //     id: 'admin.time',
-            //     title: 'ลงเวลา',
-            //     type: 'basic',
-            //     icon: 'heroicons_outline:clock',
-            //     link: '/admin/time-attendance/list',
-            // },
+          
 
         ],
     },
-    // {
-    //     id: 'finance',
-    //     title: 'จัดการเงินเดือน',
-    //     subtitle: 'ขัอมูลเกี่ยวกับเงินเดือน',
-    //     type: 'group',
-    //     icon: 'heroicons_outline:home',
-    //     children: [
-
-    //         {
-    //             id: 'finance.payroll',
-    //             title: 'เงินเดือน',
-    //             type: 'basic',
-    //             icon: '10k',
-    //             link: '/admin/payroll/list',
-    //         },
-    //         {
-    //             id: 'finance.time',
-    //             title: 'ข้อมูลลงเวลา',
-    //             type: 'basic',
-    //             icon: 'heroicons_outline:clock',
-    //             link: '/admin/time/list',
-    //         },
-    //         {
-    //             id: 'finance.income',
-    //             title: 'ประเภทเงินได้',
-    //             type: 'basic',
-    //             icon: 'heroicons_outline:currency-dollar',
-    //             link: '/admin/income/list',
-    //         },
-    //         {
-    //             id: 'finance.deduct',
-    //             title: 'ประเภทเงินหัก',
-    //             type: 'basic',
-    //             icon: 'heroicons_outline:squares-plus',
-    //             link: '/admin/deduct/list',
-    //         },
-    //         {
-    //             id: 'finance.income-paid',
-    //             title: 'เงินได้ - เงินหัก',
-    //             type: 'basic',
-    //             icon: 'heroicons_outline:list-bullet',
-    //             link: '/admin/income-deduct/list',
-    //         },
-    //         {
-    //             id: 'finance.income-paid',
-    //             title: 'ตั้งค่ามาสาย',
-    //             type: 'basic',
-    //             icon: 'heroicons_outline:list-bullet',
-    //             link: '/admin/late/list',
-    //         },
-    //     ],
-    // },
     {
         id: 'products',
-        title: 'จัดการคลังและสินค้า',
+        title: 'จัดการประเภทรายการ',
         subtitle: 'ขัอมูลเกี่ยวกับระบบ',
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
-            //     {
-            //         id: 'products.warehouse',
-            //         title: 'คลังสินค้า',
-            //         type: 'basic',
-            //         icon: 'heroicons_outline:home-modern',
-            //         link: '/admin/warehouse/list',
-            //     },
-            {
-                id: 'products.brand',
-                title: 'ยี่ห้อรถ',
-                type: 'basic',
-                icon: 'heroicons_outline:building-office-2',
-                link: '/admin/brand/list',
-            },
+
+            // {
+            //     id: 'products.brand',
+            //     title: 'ยี่ห้อรถ',
+            //     type: 'basic',
+            //     icon: 'heroicons_outline:building-office-2',
+            //     link: '/admin/brand/list',
+            // },
             {
                 id: 'products.category-product',
-                title: 'ประเภทรถยนต์',
+                title: 'ประเภทรายการ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
                 link: '/admin/category-product/list',
             },
             {
                 id: 'products.product',
-                title: 'รถยนต์',
+                title: 'Order',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
                 link: '/admin/product/list',
             },
             {
                 id: 'category-attribute.list',
-                title: 'ประเภทอะไหล่',
+                title: 'ประเภท Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench-screwdriver',
                 link: '/admin/category-attribute/list',
             },
             {
                 id: 'spare-part.list',
-                title: 'อะไหล่',
+                title: 'Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench',
                 link: '/admin/product-attribute/list',
@@ -176,13 +106,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
             {
                 id: 'sales.list',
                 title: 'คำสั่งซื้อ',
-                type: 'basic',
-                icon: 'checklist',
-                link: '/admin/sales/list',
-            },
-            {
-                id: 'sales.list',
-                title: 'ออเดอร์',
                 type: 'basic',
                 icon: 'checklist',
                 link: '/admin/sales/list',
