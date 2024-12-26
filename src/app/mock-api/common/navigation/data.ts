@@ -151,11 +151,11 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/admin/product/list',
             },
             {
-                id: 'category-attribute.list',
-                title: 'ประเภทอะไหล่',
+                id: 'category-game.list',
+                title: 'ประเภท Game',
                 type: 'basic',
                 icon: 'heroicons_outline:wrench-screwdriver',
-                link: '/admin/category-attribute/list',
+                link: '/admin/category-game/list',
             },
             {
                 id: 'spare-part.list',
