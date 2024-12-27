@@ -3,7 +3,7 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -57,6 +57,12 @@ export class ListComponent implements OnInit, AfterViewInit {
     dataRow: any[] = [];
     dtOptions: DataTables.Settings = {};
     positions: any[];
+    form: FormGroup
+    categories: any[] = []
+    brand: string[] = [
+        'K', 'R' ,'A'
+    ];
+    formFieldHelpers: string[] = ['fuse-mat-dense'];
     // public dataRow: any[];
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     constructor(
@@ -64,18 +70,33 @@ export class ListComponent implements OnInit, AfterViewInit {
         private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _service: PageService,
-        private _router: Router
+        private _router: Router,
+        private _fb: FormBuilder
     ) {
-
+        this.form = this._fb.group({
+            game_categorie_id: null,
+            brand: null
+        })
      }
 
     ngOnInit() {
         this.loadTable();
+        this.loadCategories();
      
     }
 
     ngAfterViewInit(): void {
         this._changeDetectorRef.detectChanges();
+    }
+
+    loadCategories(): void {
+        this._service.getGameCategories().subscribe({
+            next: (categories: any) => {
+                console.log('Categories:', categories); // ตรวจสอบค่าที่ได้
+                this.categories = Array.isArray(categories) ? categories : []; // แปลงให้เป็นอาเรย์ถ้าจำเป็น
+            },
+            error: (err) => console.error('Failed to load categories', err),
+        });
     }
 
 
@@ -123,7 +144,9 @@ export class ListComponent implements OnInit, AfterViewInit {
                 url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/th.json",
             },
             ajax: (dataTablesParameters: any, callback) => {
-                dataTablesParameters.status = null;
+                // dataTablesParameters.status = null;
+                dataTablesParameters.game_categorie_id = this.form.value.game_categorie_id;
+                dataTablesParameters.brand = this.form.value.brand
                 that._service.getPage(dataTablesParameters).subscribe((resp: any) => {
                     this.dataRow = resp.data;
                     this.pages.current_page = resp.current_page;
