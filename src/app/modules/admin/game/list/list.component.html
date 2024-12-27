@@ -30,10 +30,10 @@
                     <tr>
                         <th class="w-[10px]">ลำดับ</th>
                         <th>รูป</th>
-                        <th>name</th>
-                        <th>brand</th>
-                        <th>game_categorie_id</th>
-                        <th>show_step</th>
+                        <th>ชื่อเกม</th>
+                        <th>Brand</th>
+                        <th>ประเภทเกม</th>
+                        <th>ลำดับ</th>
                         <th>วันที่สร้าง</th>
                         <th class="w-[100px]">จัดการ</th>
                     </tr>
@@ -51,7 +51,7 @@
 
                         <td>{{ item.brand ? item.brand : "-" }}</td>
 
-                        <td>{{ item.game_categorie_id ? item.game_categorie_id : "-" }}</td>
+                        <td>{{ item.category ? item.category?.name : "-" }}</td>
 
                         <td>{{ item.show_step ? item.show_step : "-" }}</td>
                     
