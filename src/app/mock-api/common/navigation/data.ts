@@ -54,6 +54,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:clock',
                 link: '/admin/activity/list',
             },
+            {
+                id: 'admin.contact',
+                title: 'ติดต่อเรา',
+                type: 'basic',
+                icon: 'heroicons_outline:phone-arrow-down-left',
+                link: '/admin/contact/form',
+            },
         ],
     },
 

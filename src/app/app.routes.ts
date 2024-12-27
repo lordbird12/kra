@@ -350,6 +350,11 @@ export const appRoutes: Route[] = [
                         loadChildren: () =>
                             import('app/modules/admin/activity/page.routes'),
                     },
+                    {
+                        path: 'contact',
+                        loadChildren: () =>
+                            import('app/modules/admin/contact/page.routes'),
+                    },
                     
                 ],
             },
