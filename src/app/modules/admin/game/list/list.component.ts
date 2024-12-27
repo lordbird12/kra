@@ -81,18 +81,18 @@ export class ListComponent implements OnInit, AfterViewInit {
 
     // เพิ่มเมธอด editElement(element) และ deleteElement(element)
     editElement(element: any) {
-        this._router.navigate(['/admin/game/edit/' + element.id])
-        // const dialogRef = this.dialog.open(FormDialogComponent, {
-        //     width: '500px', // กำหนดความกว้างของ Dialog
-        //     data: element
-        // });
+        // this._router.navigate(['/admin/game/edit/' + element.id])
+        const dialogRef = this.dialog.open(FormDialogComponent, {
+            width: '500px', // กำหนดความกว้างของ Dialog
+            data: element
+        });
 
-        // dialogRef.afterClosed().subscribe(result => {
-        //     if (result) {
-        //         this.rerender();
-        //         // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
-        //     }
-        // });
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.rerender();
+                // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
+            }
+        });
     }
     addElement() {
         const dialogRef = this.dialog.open(FormDialogComponent, {
@@ -108,6 +108,7 @@ export class ListComponent implements OnInit, AfterViewInit {
             }
         });
     }
+    
   
 
     pages = { current_page: 1, last_page: 1, per_page: 10, begin: 0 };
@@ -145,12 +146,14 @@ export class ListComponent implements OnInit, AfterViewInit {
                 });
             },
             columns: [
-                { data: 'action',orderable: false },
                 { data: 'No' },
+                { data: 'image' },
                 { data: 'name' },
-                { data: 'detail' },
-                { data: 'create_by' },
+                { data: 'brand' },
+                { data: 'game_categorie' },
+                { data: 'show_step' },
                 { data: 'created_at' },
+                { data: 'action',orderable: false },
 
             ],
         };

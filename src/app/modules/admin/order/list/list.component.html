@@ -9,7 +9,7 @@
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    รายการเกม
+                    รายการ Order
                 </h2>
                 <div class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="addElement()">
@@ -31,10 +31,10 @@
                         <th class="w-[100px]">จัดการ</th>
                         <th class="w-[10px]">ลำดับ</th>
                         <th>ชื่อออเดอร์</th>
-                        <th>show_step</th>
-                        <th>รูป</th>
-                        <th>type</th>
+                        <th>ลำดับการแสดงผล</th>
+                        <th>หมวดหมู่</th>
                         <th>brand</th>
+                        <th>รูป</th>
                         <th>วันที่สร้าง</th>
                     </tr>
                 </thead>
@@ -56,7 +56,6 @@
                         <td>  <button mat-icon-button color="accent" (click)="showPicture(item.image)">
                             <mat-icon>image</mat-icon>
                         </button></td>
-                        <td>{{ item.create_by ? item.create_by : "-" }}</td>
                         <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
                     </tr>
                 </tbody>

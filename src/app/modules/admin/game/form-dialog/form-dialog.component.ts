@@ -52,7 +52,7 @@ export class FormDialogComponent implements OnInit {
     isLoading: boolean = false;
     positions: any[];
     flashMessage: 'success' | 'error' | null = null;
-
+    url_image: string = ''
     categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
 
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
@@ -76,13 +76,17 @@ export class FormDialogComponent implements OnInit {
             brand: ['']                 // แบรนด์
         });
 
-
     }
 
 
     ngOnInit(): void {
         if (this.data) {
-            this.addForm.patchValue({ ...this.data });
+            this.addForm.patchValue({ 
+                ...this.data, 
+                game_categorie_id: this.data?.category.id,
+                image: '',
+            });
+            this.url_image = this.data.image
         }
 
         this.loadCategories();
@@ -290,13 +294,16 @@ export class FormDialogComponent implements OnInit {
     files: File[] = [];
     onSelect(event: { addedFiles: File[] }): void {
         this.files.push(...event.addedFiles);
+        this.url_image = ''
     }
 
     onRemove(file: File): void {
         const index = this.files.indexOf(file);
         if (index >= 0) {
             this.files.splice(index, 1);
+            this.url_image = this.data?.image
         }
+
     }
 
 }

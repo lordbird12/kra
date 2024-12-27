@@ -13,7 +13,7 @@
                     </div>
 
                     <div class="md:w-full px-3">
-                        <mat-form-field class="w-full">
+                        <mat-form-field class="w-full" [ngClass]="formFieldHelpers">
                             <mat-label>หมวดหมู่เกม</mat-label>
                             <mat-select formControlName="game_categorie_id">
                                 <mat-option *ngFor="let category of categories" [value]="category.id">
@@ -22,7 +22,6 @@
                             </mat-select>
                         </mat-form-field>
                     </div>
-
                     <div class="md:w-full px-3">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                             <mat-label>show_step</mat-label>
@@ -33,8 +32,15 @@
                     <div class="md:w-full px-3">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                             <mat-label>brand</mat-label>
-                            <input matInput [placeholder]="'กรุณาระบุbrand'" formControlName="brand" readonly>
+                            <input matInput [placeholder]="'กรุณาระบุ Brand'" formControlName="brand" readonly>
                         </mat-form-field>
+                    </div>
+                    <div class="md:w-full px-3" *ngIf="this.url_image">
+                        <div class="flex justify-center md:w-full px-3">
+                            <img class="object-cover h-44 w-auto border-2 border-gray-50 rounded-sm"
+                                src="{{this.url_image}}">
+                            <!-- <img  class="object-contain h-44 w-auto" src="assets/images/no_image.png"> -->
+                        </div>
                     </div>
                     
                     <div class="items-center md:w-full px-3 mt-2">
