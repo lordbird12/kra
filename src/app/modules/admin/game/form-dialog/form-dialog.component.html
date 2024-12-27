@@ -14,7 +14,7 @@
 
                     <div class="md:w-full px-3">
                         <mat-form-field class="w-full" [ngClass]="formFieldHelpers">
-                            <mat-label>หมวดหมู่เกม</mat-label>
+                            <mat-label>ประเภทเกม</mat-label>
                             <mat-select formControlName="game_categorie_id">
                                 <mat-option *ngFor="let category of categories" [value]="category.id">
                                     {{ category.name }}
@@ -24,8 +24,8 @@
                     </div>
                     <div class="md:w-full px-3">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                            <mat-label>show_step</mat-label>
-                            <input matInput [placeholder]="'กรุณาระบุshow_step'" formControlName="show_step">
+                            <mat-label>ลำดับการแสดง</mat-label>
+                            <input matInput [placeholder]="'กรุณาระบุ ลำดับการแสดง'" formControlName="show_step" type="number">
                         </mat-form-field>
                     </div>
                     

@@ -74,7 +74,7 @@ export class FormComponent implements OnInit {
   /**
    * Constructor
    */
-  categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
+  categories: any[] = []; // เก็บข้อมูลประเภทเกม
   type: string[] = [
     'Text', 'Image'
   ];

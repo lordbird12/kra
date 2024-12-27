@@ -73,7 +73,7 @@ export class EditComponent implements OnInit {
    * Constructor
    */
 
-  categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
+  categories: any[] = []; // เก็บข้อมูลประเภทเกม
 
   constructor(
     private dialog: MatDialog,
@@ -106,7 +106,7 @@ export class EditComponent implements OnInit {
       this.url_image = this.itemData.image;
     })
 
-    // โหลดหมวดหมู่เกม
+    // โหลดประเภทเกม
     this.loadCategories();
 
   }

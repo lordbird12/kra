@@ -53,7 +53,7 @@ export class FormDialogComponent implements OnInit {
     positions: any[];
     flashMessage: 'success' | 'error' | null = null;
     url_image: string = ''
-    categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
+    categories: any[] = []; // เก็บข้อมูลประเภทเกม
 
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,7 +70,7 @@ export class FormDialogComponent implements OnInit {
         this.addForm = this.formBuilder.group({
             id: '',                       // ID
             name: ['', Validators.required], // ชื่อเกม
-            game_categorie_id: ['', Validators.required], // หมวดหมู่เกม
+            game_categorie_id: ['', Validators.required], // ประเภทเกม
             show_step: '',               // ขั้นตอน
             image: '',                   // รูปภาพ
             brand: ['']                 // แบรนด์
