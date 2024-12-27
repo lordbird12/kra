@@ -345,6 +345,11 @@ export const appRoutes: Route[] = [
                         loadChildren: () =>
                             import('app/modules/admin/category-game/page.routes'),
                     },
+                    {
+                        path: 'activity',
+                        loadChildren: () =>
+                            import('app/modules/admin/activity/page.routes'),
+                    },
                     
                 ],
             },

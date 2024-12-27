@@ -47,6 +47,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:key',
                 link: '/admin/permission/list',
             },
+            {
+                id: 'admin.activity',
+                title: 'ประวัติการใช้งาน',
+                type: 'basic',
+                icon: 'heroicons_outline:clock',
+                link: '/admin/activity/list',
+            },
         ],
     },
 
