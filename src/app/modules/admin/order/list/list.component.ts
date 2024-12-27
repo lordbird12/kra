@@ -95,18 +95,19 @@ export class ListComponent implements OnInit, AfterViewInit {
         // });
     }
     addElement() {
-        const dialogRef = this.dialog.open(FormDialogComponent, {
-            width: '500px', // กำหนดความกว้างของ Dialog
-            maxHeight: '100Vh'
-        });
+        this._router.navigate(['/admin/order/form'])
+        // const dialogRef = this.dialog.open(FormDialogComponent, {
+        //     width: '500px', // กำหนดความกว้างของ Dialog
+        //     maxHeight: '100Vh'
+        // });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
 
-                this.rerender();
-                // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
-            }
-        });
+        //         this.rerender();
+        //         // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
+        //     }
+        // });
     }
   
 

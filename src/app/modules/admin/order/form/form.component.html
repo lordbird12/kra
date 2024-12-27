@@ -4,11 +4,12 @@
         class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
         <div class="flex-1 flemin-w-0">
             <!-- Title -->
-            <div class="flex flex-row mt-2 justify-between">
+            <div class="flex flex-row mt-2 justify-between items-center">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    แก้ไข Order
+                  {{ Id ? 'แก้ไข Order' : 'เพิ่ม Order' }}
                 </h2>
-            </div>
+              </div>
+              
         </div>
     </div>
 
@@ -21,58 +22,74 @@
                     class="text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-500">
                     ข้อมูล Order
                 </span>
-                <div class="-mx-3 md:flex mb-6">
-
-                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                            <mat-label>ชื่อ</mat-label>
-                            <input matInput formControlName="name">
-                            <!-- <mat-hint>This is a hint text</mat-hint> -->
-                        </mat-form-field>
+                <div class="flex flex-col md:flex-row gap-2 w-full">
+                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                                <mat-label>ชื่อ</mat-label>
+                                <input matInput formControlName="name">
+                            </mat-form-field>
+                        </div>
+                        <div class="md:w-full px-3">
+                            <mat-form-field class="w-full" [ngClass]="formFieldHelpers">
+                                <mat-label>หมวดหมู่</mat-label>
+                                <mat-select formControlName="page_categorie_id">
+                                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                                        {{ category.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>                        
+                        </div>
+                        <div class="md:w-full px-3 flex flex-col md:flex-row gap-2">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-1/2">
+                                <mat-label>ประเภท</mat-label>
+                                <mat-select formControlName="type">
+                                    <mat-option *ngFor="let item of type" [value]="item">
+                                        {{ item }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>            
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-1/2">
+                                <mat-label>ลำดับการแสดงผล</mat-label>
+                                <input matInput formControlName="show_step" type="number">
+                            </mat-form-field>            
+                        </div>
+                        <div class="md:w-full px-3">
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                                <mat-label>Brand</mat-label>
+                                <input matInput formControlName="brand" readonly>
+                            </mat-form-field>
+                        </div>
                     </div>
-
-                    <div class="md:w-full px-3">
-                        <mat-form-field class="w-full" [ngClass]="formFieldHelpers">
-                            <mat-label>หมวดหมู่</mat-label>
-                            <mat-select formControlName="page_categorie_id">
-                                <mat-option *ngFor="let category of categories" [value]="category.id">
-                                    {{ category.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>                        
+                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2 gap-2 mt-5" *ngIf="this.editForm.value.type === 'Text'">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <quill-editor 
+                            [formControlName]="'detail'"
+                            [modules]="editorModules"
+                            [placeholder]="'Write something here...'"
+                            class="w-full h-full"
+                            >
+                          </quill-editor>
+                        </div>
                     </div>
-
-                    <div class="md:w-1/2 px-3">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                            <mat-label>show_step</mat-label>
-                            <input matInput formControlName="show_step">
-                        </mat-form-field>
+                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2 gap-2" *ngIf="this.editForm.value.type === 'Image'">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <ngx-dropzone (change)="onSelect($event)">
+                                <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
+                                <div *ngFor="let f of files">
+                                    <ngx-dropzone-image-preview [file]="f" [removable]="true"
+                                        (removed)="onRemove(f)"></ngx-dropzone-image-preview>
+                                </div>
+                            </ngx-dropzone>
+                        </div>
+                        <div class="flex justify-center w-full px-3" *ngIf="this.url_image">
+                            <img class="object-cover h-44 w-auto border-2 border-gray-50 rounded-sm"
+                                src="{{this.url_image}}">
+                            <!-- <img  class="object-contain h-44 w-auto" src="assets/images/no_image.png"> -->
+                        </div>
                     </div>
-
-                    <div class="md:w-full px-3">
-                        <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                            <mat-label>brand</mat-label>
-                            <input matInput formControlName="brand" readonly>
-                        </mat-form-field>
-                    </div>
-
                 </div>
-                <div class="-mx-3 md:flex mb-6">
-                    <div class="flex justify-center md:w-1/2 px-3" *ngIf="this.url_image">
-                        <img class="object-cover h-44 w-auto border-2 border-gray-50 rounded-sm"
-                            src="{{this.url_image}}">
-                        <!-- <img  class="object-contain h-44 w-auto" src="assets/images/no_image.png"> -->
-                    </div>
-                    <div class="md:w-1/2 px-3 mb-6 md:mb-0">
-                        <ngx-dropzone (change)="onSelect($event)">
-                            <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
-                            <div *ngFor="let f of files">
-                                <ngx-dropzone-image-preview [file]="f" [removable]="true"
-                                    (removed)="onRemove(f)"></ngx-dropzone-image-preview>
-                            </div>
-                        </ngx-dropzone>
-                    </div>
-                </div>
+              
                 <div class="flex justify-end mt-2">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="onSubmit()">
                         บันทึก

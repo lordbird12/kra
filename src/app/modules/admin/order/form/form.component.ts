@@ -22,11 +22,13 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatDialog } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.component';
+import { QuillModule } from 'ngx-quill';
+import { brands } from 'app/mock-api/apps/ecommerce/inventory/data';
 
 @Component({
-    selector: 'form-product',
-    templateUrl: './form.component.html',
-    styleUrls: ['./form.component.scss'],
+  selector: 'form-product',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
@@ -48,7 +50,8 @@ import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.c
     MatTableModule,
     DataTablesModule,
     MatCheckboxModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    QuillModule
   ],
 
 })
@@ -72,9 +75,19 @@ export class FormComponent implements OnInit {
   /**
    * Constructor
    */
-
   categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
-
+  type: string[] = [
+    'Text', 'Image'
+  ];
+  editorModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],        // รูปแบบข้อความ
+      [{ 'header': [1, 2, 3, false] }],       // ขนาดหัวข้อ
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],  // ลิสต์
+      ['link', 'image']                      // ลิงก์และรูปภาพ
+    ]
+  };
+  user: any;
   constructor(
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -85,30 +98,38 @@ export class FormComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) {
     this.Id = this.activatedRoute.snapshot.paramMap.get('id');
-
+    this.user = JSON.parse(localStorage.getItem('user'))
     this.editForm = this._formBuilder.group({
       id: '',
       name: [],
-      gpage_categorie_id: [''],
+      page_categorie_id: [''],
       show_step: '',
       brand: '',
-      type: '',
+      type: 'Text',
       image: [],
+      detail: '',
     })
   }
 
   ngOnInit(): void {
-    this._Service.getById(this.Id).subscribe((resp: any) => {
-      this.itemData = resp.data;
-      this.editForm.patchValue({
-        ...this.itemData,
-        image: ''
-      })
-      this.url_image = this.itemData.image;
-    })
-
-    // โหลดหมวดหมู่เกม
     this.loadCategories();
+    if (this.Id) {
+      this._Service.getById(this.Id).subscribe((resp: any) => {
+        this.itemData = resp.data;
+        this.editForm.patchValue({
+          ...this.itemData,
+          detail: this.itemData?.detail ?? '',
+          page_categorie_id: this.itemData?.category?.id,
+          image: ''
+        })
+        this.url_image = this.itemData?.image;
+      })
+    } else {
+      this.editForm.patchValue({
+        brand: this.user?.brand
+      })
+    }
+
 
   }
 
@@ -151,44 +172,75 @@ export class FormComponent implements OnInit {
         Object.entries(this.editForm.value).forEach(([key, value]: any[]) => {
           formData.append(key, value);
         });
-
         for (var i = 0; i < this.files.length; i++) {
           formData.append('image', this.files[i]);
         }
-        this._Service.update(formData).subscribe({
-          next: (resp: any) => {
-
-
-          },
-          error: (err: any) => {
-            this._fuseConfirmationService.open({
-              "title": "กรุณาระบุข้อมูล",
-              "message": err.error.message,
-              "icon": {
-                "show": true,
-                "name": "heroicons_outline:exclamation",
-                "color": "warning"
-              },
-              "actions": {
-                "confirm": {
-                  "show": false,
-                  "label": "ยืนยัน",
-                  "color": "primary"
+        if (this.Id) {
+          this._Service.update(formData).subscribe({
+            next: (resp: any) => {
+              this._router.navigate(['/admin/order/list'])
+            },
+            error: (err: any) => {
+              this._fuseConfirmationService.open({
+                "title": "กรุณาระบุข้อมูล",
+                "message": err.error.message,
+                "icon": {
+                  "show": true,
+                  "name": "heroicons_outline:exclamation",
+                  "color": "warning"
                 },
-                "cancel": {
-                  "show": false,
-                  "label": "ยกเลิก",
+                "actions": {
+                  "confirm": {
+                    "show": false,
+                    "label": "ยืนยัน",
+                    "color": "primary"
+                  },
+                  "cancel": {
+                    "show": false,
+                    "label": "ยกเลิก",
 
-                }
-              },
-              "dismissible": true
-            });
-          }
-        })
+                  }
+                },
+                "dismissible": true
+              });
+            }
+          })
+        } else {
+          this._Service.create(formData).subscribe({
+            next: (resp: any) => {
+              this._router.navigate(['/admin/order/list'])
+            },
+            error: (err: any) => {
+              this._fuseConfirmationService.open({
+                "title": "กรุณาระบุข้อมูล",
+                "message": err.error.message,
+                "icon": {
+                  "show": true,
+                  "name": "heroicons_outline:exclamation",
+                  "color": "warning"
+                },
+                "actions": {
+                  "confirm": {
+                    "show": false,
+                    "label": "ยืนยัน",
+                    "color": "primary"
+                  },
+                  "cancel": {
+                    "show": false,
+                    "label": "ยกเลิก",
+
+                  }
+                },
+                "dismissible": true
+              });
+            }
+          })
+        }
+
       }
     })
   }
-  
+
 
   // -----------------------------------------------------------------------------------------------------
   // @ Public methods
@@ -240,5 +292,7 @@ export class FormComponent implements OnInit {
       dtInstance.ajax.reload();
     });
   }
+
+
 
 }
