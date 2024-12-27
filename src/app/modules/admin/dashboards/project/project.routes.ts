@@ -9,6 +9,7 @@ export default [
         component: ProjectComponent,
         resolve  : {
             data: () => inject(ProjectService).getData(),
+            graph: () => inject(ProjectService).getDashboard(),
         },
     },
 ] as Routes;
