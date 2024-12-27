@@ -18,7 +18,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
             }
         },
         children: [
-           
+
             {
                 id: 'admin.department',
                 title: 'แผนกงาน',
@@ -39,27 +39,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 type: 'basic',
                 icon: 'heroicons_outline:list-bullet',
                 link: '/admin/employee/list',
-            },
-            {
-                id: 'admin.permission',
-                title: 'สิทธิ์การใช้งาน',
-                type: 'basic',
-                icon: 'heroicons_outline:key',
-                link: '/admin/permission/list',
-            },
-            {
-                id: 'admin.activity',
-                title: 'ประวัติการใช้งาน',
-                type: 'basic',
-                icon: 'heroicons_outline:clock',
-                link: '/admin/activity/list',
-            },
-            {
-                id: 'admin.contact',
-                title: 'ติดต่อเรา',
-                type: 'basic',
-                icon: 'heroicons_outline:phone-arrow-down-left',
-                link: '/admin/contact/form',
             },
         ],
     },
@@ -156,17 +135,17 @@ export const defaultNavigation: FuseNavigationItem[] = [
         icon: 'heroicons_outline:home',
         children: [
 
-            
+
             {
                 id: 'products.category-item',
-                title: 'ประเภทรายการ',
+                title: 'ประเภทหน้าเว็บเพจ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
                 link: '/admin/category-item/list',
             },
             {
                 id: 'products.product',
-                title: 'Order',
+                title: 'หน้าเว็บเพจ',
                 type: 'basic',
                 icon: 'heroicons_outline:cube',
                 link: '/admin/order/list',
@@ -185,6 +164,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 icon: 'heroicons_outline:puzzle-piece',
                 link: '/admin/game/list',
             },
+            {
+                id: 'admin.contact',
+                title: 'ติดต่อเรา',
+                type: 'basic',
+                icon: 'heroicons_outline:phone-arrow-down-left',
+                link: '/admin/contact/form',
+            },
         ],
     },
 
@@ -195,13 +181,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
-            // {
-            //     id: 'self.employee',
-            //     title: 'แก้ไขข้อมูลส่วนตัว',
-            //     type: 'basic',
-            //     icon: 'heroicons_outline:user',
-            //     link: '/admin/employee/list',
-            // },
+            {
+                id: 'admin.activity',
+                title: 'ประวัติการใช้งาน',
+                type: 'basic',
+                icon: 'heroicons_outline:clock',
+                link: '/admin/activity/list',
+            },
             {
                 id: 'admin.logout',
                 title: 'ออกจากระบบ',
