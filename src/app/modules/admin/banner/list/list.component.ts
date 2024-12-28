@@ -108,9 +108,7 @@ export class ListComponent implements OnInit, AfterViewInit {
             width: '500px', // กำหนดความกว้างของ Dialog
         });
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-                this.rerender()
-            }
+            this.rerender()
         });
     }
 
