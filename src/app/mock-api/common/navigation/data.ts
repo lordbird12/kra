@@ -2,46 +2,46 @@
 import { FuseNavigationItem } from '@fuse/components/navigation';
 const storedPermission = JSON.parse(localStorage.getItem('permission'));
 export const defaultNavigation: FuseNavigationItem[] = [
-    {
-        id: 'admin',
-        title: 'จัดการระบบ',
-        subtitle: 'ขัอมูลเกี่ยวกับระบบ',
-        type: 'group',
-        icon: 'heroicons_outline:home',
-        hidden: () => {
-            // const storedPermission = JSON.parse(localStorage.getItem('permission'));
-            const menu = storedPermission?.find((e) => e.menu_id == 1);
-            if (menu?.view == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        children: [
+    // {
+    //     id: 'admin',
+    //     title: 'จัดการระบบ',
+    //     subtitle: 'ขัอมูลเกี่ยวกับระบบ',
+    //     type: 'group',
+    //     icon: 'heroicons_outline:home',
+    //     hidden: () => {
+    //         // const storedPermission = JSON.parse(localStorage.getItem('permission'));
+    //         const menu = storedPermission?.find((e) => e.menu_id == 1);
+    //         if (menu?.view == 0) {
+    //             return true;
+    //         } else {
+    //             return false;
+    //         }
+    //     },
+    //     children: [
 
-            {
-                id: 'admin.department',
-                title: 'แผนกงาน',
-                type: 'basic',
-                icon: 'heroicons_outline:list-bullet',
-                link: '/admin/department/list',
-            },
-            {
-                id: 'admin.position',
-                title: 'ตำแหน่งงาน',
-                type: 'basic',
-                icon: 'heroicons_outline:list-bullet',
-                link: '/admin/position/list',
-            },
-            {
-                id: 'admin.employee',
-                title: 'ข้อมูลพนักงาน',
-                type: 'basic',
-                icon: 'heroicons_outline:list-bullet',
-                link: '/admin/employee/list',
-            },
-        ],
-    },
+    //         {
+    //             id: 'admin.department',
+    //             title: 'แผนกงาน',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:list-bullet',
+    //             link: '/admin/department/list',
+    //         },
+    //         {
+    //             id: 'admin.position',
+    //             title: 'ตำแหน่งงาน',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:list-bullet',
+    //             link: '/admin/position/list',
+    //         },
+    //         {
+    //             id: 'admin.employee',
+    //             title: 'ข้อมูลพนักงาน',
+    //             type: 'basic',
+    //             icon: 'heroicons_outline:list-bullet',
+    //             link: '/admin/employee/list',
+    //         },
+    //     ],
+    // },
 
 
     // {
