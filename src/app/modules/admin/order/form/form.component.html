@@ -6,10 +6,10 @@
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between items-center">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                  {{ Id ? 'แก้ไข Order' : 'เพิ่ม Order' }}
+                    {{ Id ? 'แก้ไข Order' : 'เพิ่ม Order' }}
                 </h2>
-              </div>
-              
+            </div>
+
         </div>
     </div>
 
@@ -18,12 +18,8 @@
         <div class="grid gap-4 w-full sm:grid-cols-1">
             <form class="bg-card rounded-2xl md:shadow overflow-hidden px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
                 [formGroup]="editForm">
-                <span
-                    class="text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-500">
-                    ข้อมูล Order
-                </span>
-                <div class="flex flex-col md:flex-row gap-2 w-full">
-                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2">
+                <div class="flex flex-col gap-2 w-full">
+                    <div class="mx-3 flex mb-6 flex-col  w-full">
                         <div class="w-full px-3 mb-6 md:mb-0">
                             <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                                 <mat-label>ชื่อ</mat-label>
@@ -33,12 +29,13 @@
                         <div class="md:w-full px-3">
                             <mat-form-field class="w-full" [ngClass]="formFieldHelpers">
                                 <mat-label>หมวดหมู่</mat-label>
-                                <mat-select formControlName="page_categorie_id">
+                                <mat-select formControlName="page_categorie_id"
+                                    (selectionChange)="onIdChange($event.value)">
                                     <mat-option *ngFor="let category of categories" [value]="category.id">
-                                        {{ category.name }}
+                                        [{{ category.id}}] {{ category.name }}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>                        
+                            </mat-form-field>
                         </div>
                         <div class="md:w-full px-3 flex flex-col md:flex-row gap-2">
                             <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-1/2">
@@ -48,11 +45,11 @@
                                         {{ item }}
                                     </mat-option>
                                 </mat-select>
-                            </mat-form-field>            
+                            </mat-form-field>
                             <mat-form-field [ngClass]="formFieldHelpers" class="w-full md:w-1/2">
                                 <mat-label>ลำดับการแสดงผล</mat-label>
                                 <input matInput formControlName="show_step" type="number">
-                            </mat-form-field>            
+                            </mat-form-field>
                         </div>
                         <div class="md:w-full px-3">
                             <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
@@ -61,18 +58,29 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2 gap-2 mt-5" *ngIf="this.editForm.value.type === 'Text'">
-                        <div class="w-full px-3 mb-6 md:mb-0">
-                            <quill-editor 
-                            [formControlName]="'detail'"
-                            [modules]="editorModules"
-                            [placeholder]="'Write something here...'"
-                            class="w-full h-full"
-                            >
-                          </quill-editor>
+                    <!-- ไฟล์แนบ -->
+                    <div *ngIf="selectedId === 6 || selectedId === 5"
+                        class="mx-3 flex mb-6 flex-col w-full md:w-full gap-2">
+                        <div class="md:w-full px-3">
+                            <mat-form-field class="w-full" [ngClass]="formFieldHelpers" (click)="file_name.click()">
+                                <mat-label>แนบเอกสาร (เลือกเฉพาะไฟล์ Excel)</mat-label>
+                                <div matPrefix class="bg-red-400 cursor-pointer pr-2">
+                                    <p>upload file |</p>
+                                </div>
+                                <button mat-icon-button matSuffix>
+                                    <mat-icon>attach_file</mat-icon>
+                                </button>
+                                <input type="text" readonly matInput [formControlName]="'file_name'" />
+                                <input type="file" hidden #file_name
+                                    (change)="onSelectFile(file_name.files, 'addfile', 0)"
+                                    accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                                <mat-error>กรุณาเลือกไฟล์</mat-error>
+                            </mat-form-field>
                         </div>
                     </div>
-                    <div class="mx-3 flex mb-6 flex-col  w-full md:w-1/2 gap-2" *ngIf="this.editForm.value.type === 'Image'">
+                    <!-- เลือกรูป -->
+                    <div *ngIf="selectedId === 1 || selectedId === 2 || selectedId === 3 || selectedId === 4"
+                        class="mx-3 flex mb-6 flex-col w-full md:w-full gap-2">
                         <div class="w-full px-3 mb-6 md:mb-0">
                             <ngx-dropzone (change)="onSelect($event)">
                                 <ngx-dropzone-label>เลือกรูป</ngx-dropzone-label>
@@ -85,12 +93,19 @@
                         <div class="flex justify-center w-full px-3" *ngIf="this.url_image">
                             <img class="object-cover h-44 w-auto border-2 border-gray-50 rounded-sm"
                                 src="{{this.url_image}}">
-                            <!-- <img  class="object-contain h-44 w-auto" src="assets/images/no_image.png"> -->
+                        </div>
+                    </div>
+                    <!-- Text Editor -->
+                    <div *ngIf="selectedId === 1 || selectedId === 2 || selectedId === 3 || selectedId === 4 || selectedId === 6 || selectedId === 5 || selectedId === 7"
+                        class="mx-3 flex mb-6 flex-col w-full md:w-full gap-2 mt-5">
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                            <quill-editor [formControlName]="'detail'" [modules]="editorModules"
+                                [placeholder]="'Write something here...'" class="w-full h-full">
+                            </quill-editor>
                         </div>
                     </div>
                 </div>
-              
-                <div class="flex justify-end mt-2">
+                <div class="flex justify-end mt-10">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="onSubmit()">
                         บันทึก
                     </button>
@@ -102,5 +117,5 @@
         </div>
 
     </div>
-   
+
 </div>

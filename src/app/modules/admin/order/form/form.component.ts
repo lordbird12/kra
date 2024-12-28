@@ -88,6 +88,7 @@ export class FormComponent implements OnInit {
     ]
   };
   user: any;
+  selectedId: number = 1; // ค่าเริ่มต้น
   constructor(
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -108,6 +109,8 @@ export class FormComponent implements OnInit {
       type: 'Text',
       image: [],
       detail: '',
+      file: '',
+      file_name: '',
     })
   }
 
@@ -120,12 +123,14 @@ export class FormComponent implements OnInit {
           ...this.itemData,
           detail: this.itemData?.detail ?? '',
           page_categorie_id: this.itemData?.category?.id,
-          image: ''
+          image: '',
+          file: ''
         })
         this.url_image = this.itemData?.image;
       })
     } else {
       this.editForm.patchValue({
+        page_categorie_id: 1,
         brand: this.user?.brand
       })
     }
@@ -144,8 +149,8 @@ export class FormComponent implements OnInit {
 
   onSubmit(): void {
     const confirmation = this._fuseConfirmationService.open({
-      "title": "แก้ไขข้อมูล",
-      "message": "คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ",
+      "title": "บันทึกข้อมูล",
+      "message": "คุณต้องการบันทึกข้อมูลใช่หรือไม่ ",
       "icon": {
         "show": false,
         "name": "heroicons_outline:exclamation",
@@ -174,6 +179,9 @@ export class FormComponent implements OnInit {
         });
         for (var i = 0; i < this.files.length; i++) {
           formData.append('image', this.files[i]);
+        }
+        for (var i = 0; i < this.excelFile.length; i++) {
+          formData.append('file', this.excelFile[i]);
         }
         if (this.Id) {
           this._Service.update(formData).subscribe({
@@ -241,11 +249,6 @@ export class FormComponent implements OnInit {
     })
   }
 
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
-
   /**
    * Get the form field helpers as string
    */
@@ -254,7 +257,7 @@ export class FormComponent implements OnInit {
   }
 
   backTo() {
-    this._router.navigate(['admin/game/list'])
+    this._router.navigate(['admin/order/list'])
   }
 
   files: File[] = [];
@@ -293,6 +296,25 @@ export class FormComponent implements OnInit {
     });
   }
 
+  fileError: string | null = null;
+  excelFile: File[] = [];
+  onSelectFile(event: any, input: any, index: number) {
+    if (input === 'addfile') {
+      const file = event[0];
+      const fileName = file.name;
+      this.editForm.patchValue({
+        file: file,
+        file_name: fileName,
+      });
+    }
+  }
 
+  removeFile_Attach(index: number): void {
+    // this.all_file_Attachs.removeAt(index);  // Remove form group from the form array at the specified index
+  }
+
+  onIdChange(id: number): void {
+    this.selectedId = id;
+  }
 
 }
