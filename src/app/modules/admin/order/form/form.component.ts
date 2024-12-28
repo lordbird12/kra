@@ -134,8 +134,6 @@ export class FormComponent implements OnInit {
         brand: this.user?.brand
       })
     }
-
-
   }
 
   loadCategories(): void {
@@ -169,7 +167,6 @@ export class FormComponent implements OnInit {
       },
       "dismissible": true
     });
-
     // Subscribe to the confirmation dialog closed action
     confirmation.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {

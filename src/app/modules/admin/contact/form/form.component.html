@@ -8,20 +8,14 @@
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     ติดต่อเรา
                 </h2>
-              </div>
-              
+            </div>
         </div>
     </div>
-
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10">
         <div class="grid gap-4 w-full sm:grid-cols-1">
             <form class="bg-card rounded-2xl md:shadow overflow-hidden px-8 pt-6 pb-8 mb-4 flex flex-col my-2"
                 [formGroup]="form">
-                <span
-                    class="text-xl md:text-xl font-bold tracking-tight leading-7 sm:leading-10 truncate text-gray-500">
-                   ติดต่อเรา
-                </span>
                 <div class="flex flex-col gap-2 w-full">
                     <div class="w-full px-3 mb-6 md:mb-0">
                         <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
@@ -31,13 +25,9 @@
                     </div>
                     <div class="mx-2 flex mb-6 flex-col  w-full md:w-full gap-2 mt-5">
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <quill-editor 
-                            [formControlName]="'chat'"
-                            [modules]="editorModules"
-                            [placeholder]="'Write something here...'"
-                            class="w-full h-full"
-                            >
-                          </quill-editor>
+                            <quill-editor [formControlName]="'chat'" [modules]="editorModules"
+                                [placeholder]="'Write something here...'" class="w-full h-full">
+                            </quill-editor>
                         </div>
                     </div>
                 </div>
@@ -51,7 +41,5 @@
                 </div>
             </form>
         </div>
-
     </div>
-   
 </div>
