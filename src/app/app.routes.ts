@@ -4,11 +4,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 
-// @formatter:off
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
-    // Redirect empty path to '/dashboards/project'
     { path: '', pathMatch: 'full', redirectTo: 'dashboards/project' },
 
     // Redirect signed-in user to the '/dashboards/project'
@@ -198,7 +194,11 @@ export const appRoutes: Route[] = [
                         loadChildren: () =>
                             import('app/modules/admin/contact/page.routes'),
                     },
-                    
+                    {
+                        path: 'banner',
+                        loadChildren: () =>
+                            import('app/modules/admin/banner/page.routes'),
+                    },
                 ],
             },
         ],

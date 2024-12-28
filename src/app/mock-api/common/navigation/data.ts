@@ -134,8 +134,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
-
-
+            {
+                id: 'products.banner',
+                title: 'ประเภทแบนเนอร์',
+                type: 'basic',
+                icon: 'heroicons_outline:cube',
+                link: '/admin/banner/list',
+            },
             {
                 id: 'products.category-item',
                 title: 'ประเภทหน้าเว็บเพจ',
@@ -173,7 +178,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
-
     {
         id: 'self',
         title: 'ส่วนตัว',
