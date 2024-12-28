@@ -69,8 +69,8 @@
 
                         <td>{{ pages.begin + (i + 1) }}</td>
                         <td>
-                            <div
-                                class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible">
+                            <div class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible cursor-pointer"
+                                (click)="showPicture(item.image)">
                                 <img class="object-cover object-center rounded-lg h-20 w-20" [src]="item.image" />
                             </div>
                         </td>

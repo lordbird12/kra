@@ -3,7 +3,7 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -56,15 +56,27 @@ export class ListComponent implements OnInit, AfterViewInit {
     dtOptions: DataTables.Settings = {};
     positions: any[];
     public dataRow: any[];
+    brands: any[] = [
+        'K','R','A'
+    ];
+    type: any[] = [
+        'Banner', 'Jackpot'
+    ]
+    form: FormGroup;
+    formFieldHelpers: string[] = ['fuse-mat-dense'];
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     constructor(
         private dialog: MatDialog,
         private _changeDetectorRef: ChangeDetectorRef,
         private _service: PageService,
-        private _router: Router
+        private _router: Router,
+        private _fb: FormBuilder
     ) 
     {
-
+        this.form = this._fb.group({
+            type: '',
+            brand: ''
+        })
     }
 
     ngOnInit() {
@@ -115,8 +127,8 @@ export class ListComponent implements OnInit, AfterViewInit {
             },
             ajax: (dataTablesParameters: any, callback) => {
                 dataTablesParameters.status = null;
-                dataTablesParameters.brand = null;
-                dataTablesParameters.type = null;
+                dataTablesParameters.brand = this.form.value.brand;
+                dataTablesParameters.type = this.form.value.type;
                 that._service
                     .getPage(dataTablesParameters)
                     .subscribe((resp: any) => {

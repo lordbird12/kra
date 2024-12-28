@@ -24,33 +24,61 @@
     </div>
 
     <!-- Main -->
+     
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-10  bg-white">
+        <form [formGroup]="form" class="mx-4">
+            <div class="flex flex-col md:flex-row pb-2 mt-5 gap-2">
+                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
+                    <mat-label>ประเภท</mat-label>
+                    <mat-select [formControlName]="'type'" (selectionChange)="rerender()">
+                        <mat-option [value]="null">
+                            ทั้งหมด
+                        </mat-option>
+                        <mat-option *ngFor="let item of type;" value="{{item}}">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
+                    <mat-label>Brand</mat-label>
+                    <mat-select [formControlName]="'brand'" (selectionChange)="rerender()">
+                        <mat-option [value]="null">
+                            ทั้งหมด
+                        </mat-option>
+                        <mat-option *ngFor="let item of brands;" value="{{item}}">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
         <div class="flex flex-col flex-auto p-5  sm:overflow-y-auto">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover">
                 <thead>
                     <tr>
-                        <th class="w-1/12">ลำดับ</th>
-                        <th class="w-1/12">รูป</th>
-                        <th class="w-2/12">ลำดับการแสดงผล</th>
-                        <th class="w-1/12">ประเภท</th>
-                        <th class="w-1/12">Brand</th>
-                        <th class="w-1/12">วันที่สร้าง</th>
-                        <th class="w-1/12">จัดการ</th>
+                        <th class="w-1/12 text-center">ลำดับ</th>
+                        <th class="w-1/12 text-center">รูป</th>
+                        <th class="w-2/12 text-center">ลำดับการแสดงผล</th>
+                        <th class="w-1/12 text-center">ประเภท</th>
+                        <th class="w-1/12 text-center">Brand</th>
+                        <th class="w-1/12 text-center">วันที่สร้าง</th>
+                        <th class="w-1/12 text-center">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
                         <td>{{ pages.begin + (i + 1) }}</td>
                         <td>
-                            <button mat-button (click)="showPicture(item.image)">
-                                <mat-icon>image</mat-icon>
-                            </button>
+                            <div
+                                class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible cursor-pointer" (click)="showPicture(item.image)">
+                                <img class="object-cover object-center rounded-lg h-20 w-auto" [src]="item.image" />
+                            </div>
                         </td>
-                        <td>{{ item.show_step ?? '' }}</td>
-                        <td>{{ item.type ?? '' }}</td>
-                        <td>{{ item.brand ?? '' }}</td>
-                        <td>{{ item.created_at | date : "dd-MM-yyyy hh:mm a " }}</td>
-                        <td>
+                        <td class="text-center">{{ item.show_step ?? '' }}</td>
+                        <td class="text-center">{{ item.type ?? '' }}</td>
+                        <td class="text-center">{{ item.brand ?? '' }}</td>
+                        <td class="text-center">{{ item.created_at | date : "dd-MM-yyyy hh:mm a " }}</td>
+                        <td class="text-center">
                             <button mat-icon-button color="accent" (click)="editElement(item)">
                                 <mat-icon>edit</mat-icon>
                             </button>
