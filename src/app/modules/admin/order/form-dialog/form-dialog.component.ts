@@ -54,14 +54,15 @@ export class FormDialogComponent implements OnInit {
     flashMessage: 'success' | 'error' | null = null;
     url_image: string = ''
     categories: any[] = []; // เก็บข้อมูลประเภทเกม
-
+    selectedFile: File = null;
+    taxType: any[]
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private formBuilder: FormBuilder,
         private _service: PageService,
         private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef
-    ) {
+    ) {}
 
     ngOnInit(): void {
         // localStorage.setItem('user', JSON.stringify({ brand: 'K', type: 'Example Type' }));
