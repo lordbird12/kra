@@ -4,11 +4,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 
-// @formatter:off
-/* eslint-disable max-len */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 export const appRoutes: Route[] = [
-    // Redirect empty path to '/dashboards/project'
     { path: '', pathMatch: 'full', redirectTo: 'dashboards/project' },
 
     // Redirect signed-in user to the '/dashboards/project'
@@ -153,187 +149,55 @@ export const appRoutes: Route[] = [
 
                 path: 'admin',
                 children: [
-                    { path: 'payroll', loadChildren: () => import('app/modules/admin/payroll/page.routes') },
-                    { path: 'time', loadChildren: () => import('app/modules/admin/time/page.routes') },
-                    { path: 'cleam', loadChildren: () => import('app/modules/admin/cleam/page.routes') },
-                    { path: 'payment', loadChildren: () => import('app/modules/admin/payment/page.routes') },
                     {
                         path: 'department',
                         loadChildren: () =>
                             import('app/modules/admin/department/page.routes'),
                     },
                     {
-                        path: 'income',
-                        loadChildren: () =>
-                            import('app/modules/admin/income/page.routes'),
-                    },
-                    {
-                        path: 'income-deduct',
-                        loadChildren: () =>
-                            import('app/modules/admin/income-paid/page.routes'),
-                    },
-                    {
-                        path: 'deduct',
-                        loadChildren: () =>
-                            import('app/modules/admin/deduct/page.routes'),
-                    },
-                    {
-                        path: 'late',
-                        loadChildren: () =>
-                            import('app/modules/admin/late/page.routes'),
-                    },
-                    {
                         path: 'position',
                         loadChildren: () =>
                             import('app/modules/admin/position/page.routes'),
                     },
+                   
                     {
                         path: 'employee',
                         loadChildren: () =>
                             import('app/modules/admin/employee/page.routes'),
                     },
-                    {
-                        path: 'permission',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/permission/permission-routing'
-                            ),
-                    },
-                    {
-                        path: 'product',
-                        loadChildren: () =>
-                            import('app/modules/admin/product/page.routes'),
-                    },
-                    {
-                        path: 'product-attribute',
-                        loadChildren: () =>
-                            import('app/modules/admin/product-attribute/page.routes'),
-                    },
-                    {
-                        path: 'customers',
-                        loadChildren: () =>
-                            import('app/modules/admin/customers/page.routes'),
-                    },
-                    {
-                        path: 'finance',
-                        loadChildren: () =>
-                            import('app/modules/admin/finance/page.routes'),
-                    },
-                    {
-                        path: 'garage',
-                        loadChildren: () =>
-                            import('app/modules/admin/garage/page.routes'),
-                    },
-                    {
-                        path: 'broker',
-                        loadChildren: () =>
-                            import('app/modules/admin/broker/page.routes'),
-                    },
-                    {
-                        path: 'insurance',
-                        loadChildren: () =>
-                            import('app/modules/admin/insurance/page.routes'),
-                    },
-                    {
-                        path: 'brand',
-                        loadChildren: () =>
-                            import('app/modules/admin/brand/page.routes'),
-                    },
-                    {
-                        path: 'brand-model',
-                        loadChildren: () =>
-                            import('app/modules/admin/brand-model/page.routes'),
-                    },
+                   
                     {
                         path: 'game',
                         loadChildren: () =>
                             import('app/modules/admin/game/page.routes'),
                     },
-                    {
-                        path: 'sales',
-                        loadChildren: () =>
-                            import('app/modules/admin/sales/page.routes'),
-                    },
+                 
                     {
                         path: 'order',
                         loadChildren: () =>
                             import('app/modules/admin/order/page.routes'),
                     },
+                    
                     {
-                        path: 'time-attendance',
+                        path: 'category-item',
                         loadChildren: () =>
-                            import(
-                                'app/modules/admin/timea-attendance/page.routes'
-                            ),
+                            import('app/modules/admin/category-item/page.routes'),
                     },
                     {
-                        path: 'supplier',
+                        path: 'category-game',
                         loadChildren: () =>
-                            import('app/modules/admin/supplier/page.routes'),
+                            import('app/modules/admin/category-game/page.routes'),
+                    },
+                   
+                    {
+                        path: 'contact',
+                        loadChildren: () =>
+                            import('app/modules/admin/contact/page.routes'),
                     },
                     {
-                        path: 'companie',
+                        path: 'banner',
                         loadChildren: () =>
-                            import('app/modules/admin/companie/page.routes'),
-                    },
-                    {
-                        path: 'branch',
-                        loadChildren: () =>
-                            import('app/modules/admin/branch/page.routes'),
-                    },
-                    {
-                        path: 'transfer',
-                        loadChildren: () =>
-                            import('app/modules/admin/transfer/page.routes'),
-                    },
-                    {
-                        path: 'purchase',
-                        loadChildren: () =>
-                            import('app/modules/admin/purchase/page.routes'),
-                    },
-                    {
-                        path: 'promotion',
-                        loadChildren: () =>
-                            import('app/modules/admin/promotion/page.routes'),
-                    },
-                    {
-                        path: 'discount',
-                        loadChildren: () =>
-                            import('app/modules/admin/discount/page.routes'),
-                    },
-                    {
-                        path: 'report-stock-vat',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/report-stock-vat/page.routes'
-                            ),
-                    },
-                    {
-                        path: 'report-stock-card',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/report-stock-card/page.routes'
-                            ),
-                    },
-                    {
-                        path: 'promotion',
-                        loadChildren: () =>
-                            import('app/modules/admin/promotion/page.routes'),
-                    },
-                    {
-                        path: 'category-attribute',
-                        loadChildren: () =>
-                            import('app/modules/admin/category-attribute/page.routes'),
-                    },
-                    {
-                        path: 'spare-part',
-                        loadChildren: () =>
-                            import('app/modules/admin/spare-part/page.routes'),
-                    },
-                    {
-                        path: 'category-product',
-                        loadChildren: () =>
-                            import('app/modules/admin/category-product/page.routes'),
+                            import('app/modules/admin/banner/page.routes'),
                     },
                 ],
             },

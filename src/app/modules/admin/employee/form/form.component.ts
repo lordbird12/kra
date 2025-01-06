@@ -72,8 +72,22 @@ export class FormComponent implements OnInit {
     addForm2: FormGroup;
     isLoading: boolean = false;
     positions: any[];
-    departments: any[];
-    permissions: any[];
+    departments: any[] =[
+        {
+            id: 4,
+            name: 'พนักงานทั่วไป'
+        },
+    ];
+    permissions: any[] = [
+        {
+            id: 1,
+            name: 'admin'
+        },
+        {
+            id: 2,
+            name: 'พนักงานทั่วไป'
+        },
+    ];
     flashMessage: 'success' | 'error' | null = null;
     selectedFile: File = null;
     Id: any;
@@ -92,7 +106,7 @@ export class FormComponent implements OnInit {
         this.addForm = this.formBuilder.group({
             permission_id: [],
             department_id: [],
-            position_id: [],
+            position_id: 4,
             username: [],
             password: [],
             name: [],
@@ -124,12 +138,12 @@ export class FormComponent implements OnInit {
     async ngOnInit(): Promise<void> {
         let response = await lastValueFrom(
             forkJoin({
-                permissions: this._service.getPermission(),
+                // permissions: this._service.getPermission(),
                 departments: this._service.getDepartment(),
                 positions: this._service.getPosition(),
             })
         )
-            this.permissions = response.permissions.data;
+            // this.permissions = response.permissions.data;
             this.departments = response.departments.data;
             this.positions = response.positions.data;
             // this.loadTable();

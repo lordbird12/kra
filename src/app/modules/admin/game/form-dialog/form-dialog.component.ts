@@ -1,6 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -52,6 +52,9 @@ export class FormDialogComponent implements OnInit {
     isLoading: boolean = false;
     positions: any[];
     flashMessage: 'success' | 'error' | null = null;
+    url_image: string = ''
+    categories: any[] = []; // เก็บข้อมูลประเภทเกม
+
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private formBuilder: FormBuilder,
@@ -65,23 +68,50 @@ export class FormDialogComponent implements OnInit {
         }
 
         this.addForm = this.formBuilder.group({
-            id: '',
-            name: [],
-            detail: '',
-            image: [],
-            status: '',
+            id: '',                       // ID
+            name: ['', Validators.required], // ชื่อเกม
+            game_categorie_id: ['', Validators.required], // ประเภทเกม
+            show_step: '',               // ขั้นตอน
+            image: '',                   // รูปภาพ
+            brand: ['']                 // แบรนด์
         });
+
     }
 
-    ngOnInit(): void {
 
+    ngOnInit(): void {
         if (this.data) {
-            this.addForm.patchValue({
-                ...this.data
-            })
+            this.addForm.patchValue({ 
+                ...this.data, 
+                game_categorie_id: this.data?.category.id,
+                image: '',
+            });
+            this.url_image = this.data.image
         }
 
+        this.loadCategories();
+        console.log('Initial form value:', this.addForm.value);
+        
+        // ดึงข้อมูล `brand` จาก localStorage
+        const userData = localStorage.getItem('user');
+        if (userData) {
+            const user = JSON.parse(userData); // แปลง string เป็น JSON object
+            this.addForm.patchValue({
+                brand: user.brand // ตั้งค่า brand อัตโนมัติ
+            });
+        }
+    }
 
+
+
+    loadCategories(): void {
+        this._service.getGameCategories().subscribe({
+            next: (categories: any) => {
+                console.log('Categories:', categories); // ตรวจสอบค่าที่ได้
+                this.categories = Array.isArray(categories) ? categories : []; // แปลงให้เป็นอาเรย์ถ้าจำเป็น
+            },
+            error: (err) => console.error('Failed to load categories', err),
+        });
     }
 
 
@@ -89,7 +119,7 @@ export class FormDialogComponent implements OnInit {
     onSaveClick(): void {
         this.flashMessage = null;
         // Open the confirmation dialog
-        if(this.data) {
+        if (this.data) {
             const confirmation = this._fuseConfirmationService.open({
                 "title": "แก้ไขข้อมูล",
                 "message": "คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ",
@@ -111,14 +141,19 @@ export class FormDialogComponent implements OnInit {
                 },
                 "dismissible": true
             });
-    
+
             // Subscribe to the confirmation dialog closed action
             confirmation.afterClosed().subscribe((result) => {
                 if (result === 'confirmed') {
                     const formData = new FormData();
-                    Object.entries(this.addForm.value).forEach(([key, value]: any[]) => {
-                        formData.append(key, value);
+                    Object.entries(this.addForm.value).forEach(([key, value]: [string, any]) => {
+                        if (key === 'image' && value instanceof File) {
+                            formData.append(key, value); // ถ้า image เป็นไฟล์
+                        } else {
+                            formData.append(key, value);
+                        }
                     });
+
 
                     for (var i = 0; i < this.files.length; i++) {
                         formData.append('image', this.files[i]);
@@ -147,7 +182,7 @@ export class FormDialogComponent implements OnInit {
                                     "cancel": {
                                         "show": false,
                                         "label": "ยกเลิก",
-    
+
                                     }
                                 },
                                 "dismissible": true
@@ -178,11 +213,11 @@ export class FormDialogComponent implements OnInit {
                 },
                 "dismissible": true
             });
-    
+
             // Subscribe to the confirmation dialog closed action
             confirmation.afterClosed().subscribe((result) => {
                 if (result === 'confirmed') {
-    
+
                     const formData = new FormData();
                     Object.entries(this.addForm.value).forEach(([key, value]: any[]) => {
                         formData.append(key, value);
@@ -215,7 +250,7 @@ export class FormDialogComponent implements OnInit {
                                     "cancel": {
                                         "show": false,
                                         "label": "ยกเลิก",
-    
+
                                     }
                                 },
                                 "dismissible": true
@@ -225,10 +260,10 @@ export class FormDialogComponent implements OnInit {
                 }
             })
         }
-    
 
 
-      
+
+
 
     }
 
@@ -259,13 +294,16 @@ export class FormDialogComponent implements OnInit {
     files: File[] = [];
     onSelect(event: { addedFiles: File[] }): void {
         this.files.push(...event.addedFiles);
+        this.url_image = ''
     }
 
     onRemove(file: File): void {
         const index = this.files.indexOf(file);
         if (index >= 0) {
             this.files.splice(index, 1);
+            this.url_image = this.data?.image
         }
+
     }
 
 }

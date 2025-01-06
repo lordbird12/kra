@@ -22,11 +22,13 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { MatDialog } from '@angular/material/dialog';
 import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.component';
+import { QuillModule } from 'ngx-quill';
+import { brands } from 'app/mock-api/apps/ecommerce/inventory/data';
 
 @Component({
-    selector: 'form-product',
-    templateUrl: './form.component.html',
-    styleUrls: ['./form.component.scss'],
+  selector: 'form-product',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
   encapsulation: ViewEncapsulation.None,
   standalone: true,
   imports: [
@@ -48,7 +50,8 @@ import { FormDialogComponent } from '../../brand-model/form-dialog/form-dialog.c
     MatTableModule,
     DataTablesModule,
     MatCheckboxModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    QuillModule
   ],
 
 })
@@ -72,9 +75,20 @@ export class FormComponent implements OnInit {
   /**
    * Constructor
    */
-
-  categories: any[] = []; // เก็บข้อมูลหมวดหมู่เกม
-
+  categories: any[] = []; // เก็บข้อมูลประเภทเกม
+  type: string[] = [
+    'Text', 'Image'
+  ];
+  editorModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],        // รูปแบบข้อความ
+      [{ 'header': [1, 2, 3, false] }],       // ขนาดหัวข้อ
+      [{ 'list': 'ordered' }, { 'list': 'bullet' }],  // ลิสต์
+      ['link', 'image']                      // ลิงก์และรูปภาพ
+    ]
+  };
+  user: any;
+  selectedId: number = 1; // ค่าเริ่มต้น
   constructor(
     private dialog: MatDialog,
     private _formBuilder: FormBuilder,
@@ -85,31 +99,41 @@ export class FormComponent implements OnInit {
     public activatedRoute: ActivatedRoute,
   ) {
     this.Id = this.activatedRoute.snapshot.paramMap.get('id');
-
+    this.user = JSON.parse(localStorage.getItem('user'))
     this.editForm = this._formBuilder.group({
       id: '',
       name: [],
-      gpage_categorie_id: [''],
+      page_categorie_id: [''],
       show_step: '',
       brand: '',
-      type: '',
+      type: 'Text',
       image: [],
+      detail: '',
+      file: '',
+      file_name: '',
     })
   }
 
   ngOnInit(): void {
-    this._Service.getById(this.Id).subscribe((resp: any) => {
-      this.itemData = resp.data;
-      this.editForm.patchValue({
-        ...this.itemData,
-        image: ''
-      })
-      this.url_image = this.itemData.image;
-    })
-
-    // โหลดหมวดหมู่เกม
     this.loadCategories();
-
+    if (this.Id) {
+      this._Service.getById(this.Id).subscribe((resp: any) => {
+        this.itemData = resp.data;
+        this.editForm.patchValue({
+          ...this.itemData,
+          detail: this.itemData?.detail ?? '',
+          page_categorie_id: this.itemData?.category?.id,
+          image: '',
+          file: ''
+        })
+        this.url_image = this.itemData?.image;
+      })
+    } else {
+      this.editForm.patchValue({
+        page_categorie_id: 1,
+        brand: this.user?.brand
+      })
+    }
   }
 
   loadCategories(): void {
@@ -123,8 +147,8 @@ export class FormComponent implements OnInit {
 
   onSubmit(): void {
     const confirmation = this._fuseConfirmationService.open({
-      "title": "แก้ไขข้อมูล",
-      "message": "คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ",
+      "title": "บันทึกข้อมูล",
+      "message": "คุณต้องการบันทึกข้อมูลใช่หรือไม่ ",
       "icon": {
         "show": false,
         "name": "heroicons_outline:exclamation",
@@ -143,7 +167,6 @@ export class FormComponent implements OnInit {
       },
       "dismissible": true
     });
-
     // Subscribe to the confirmation dialog closed action
     confirmation.afterClosed().subscribe((result) => {
       if (result === 'confirmed') {
@@ -151,48 +174,77 @@ export class FormComponent implements OnInit {
         Object.entries(this.editForm.value).forEach(([key, value]: any[]) => {
           formData.append(key, value);
         });
-
         for (var i = 0; i < this.files.length; i++) {
           formData.append('image', this.files[i]);
         }
-        this._Service.update(formData).subscribe({
-          next: (resp: any) => {
-
-
-          },
-          error: (err: any) => {
-            this._fuseConfirmationService.open({
-              "title": "กรุณาระบุข้อมูล",
-              "message": err.error.message,
-              "icon": {
-                "show": true,
-                "name": "heroicons_outline:exclamation",
-                "color": "warning"
-              },
-              "actions": {
-                "confirm": {
-                  "show": false,
-                  "label": "ยืนยัน",
-                  "color": "primary"
+        for (var i = 0; i < this.excelFile.length; i++) {
+          formData.append('file', this.excelFile[i]);
+        }
+        if (this.Id) {
+          this._Service.update(formData).subscribe({
+            next: (resp: any) => {
+              this._router.navigate(['/admin/order/list'])
+            },
+            error: (err: any) => {
+              this._fuseConfirmationService.open({
+                "title": "กรุณาระบุข้อมูล",
+                "message": err.error.message,
+                "icon": {
+                  "show": true,
+                  "name": "heroicons_outline:exclamation",
+                  "color": "warning"
                 },
-                "cancel": {
-                  "show": false,
-                  "label": "ยกเลิก",
+                "actions": {
+                  "confirm": {
+                    "show": false,
+                    "label": "ยืนยัน",
+                    "color": "primary"
+                  },
+                  "cancel": {
+                    "show": false,
+                    "label": "ยกเลิก",
 
-                }
-              },
-              "dismissible": true
-            });
-          }
-        })
+                  }
+                },
+                "dismissible": true
+              });
+            }
+          })
+        } else {
+          this._Service.create(formData).subscribe({
+            next: (resp: any) => {
+              this._router.navigate(['/admin/order/list'])
+            },
+            error: (err: any) => {
+              this._fuseConfirmationService.open({
+                "title": "กรุณาระบุข้อมูล",
+                "message": err.error.message,
+                "icon": {
+                  "show": true,
+                  "name": "heroicons_outline:exclamation",
+                  "color": "warning"
+                },
+                "actions": {
+                  "confirm": {
+                    "show": false,
+                    "label": "ยืนยัน",
+                    "color": "primary"
+                  },
+                  "cancel": {
+                    "show": false,
+                    "label": "ยกเลิก",
+
+                  }
+                },
+                "dismissible": true
+              });
+            }
+          })
+        }
+
       }
     })
   }
-  
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
 
   /**
    * Get the form field helpers as string
@@ -202,7 +254,7 @@ export class FormComponent implements OnInit {
   }
 
   backTo() {
-    this._router.navigate(['admin/game/list'])
+    this._router.navigate(['admin/order/list'])
   }
 
   files: File[] = [];
@@ -239,6 +291,27 @@ export class FormComponent implements OnInit {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       dtInstance.ajax.reload();
     });
+  }
+
+  fileError: string | null = null;
+  excelFile: File[] = [];
+  onSelectFile(event: any, input: any, index: number) {
+    if (input === 'addfile') {
+      const file = event[0];
+      const fileName = file.name;
+      this.editForm.patchValue({
+        file: file,
+        file_name: fileName,
+      });
+    }
+  }
+
+  removeFile_Attach(index: number): void {
+    // this.all_file_Attachs.removeAt(index);  // Remove form group from the form array at the specified index
+  }
+
+  onIdChange(id: number): void {
+    this.selectedId = id;
   }
 
 }

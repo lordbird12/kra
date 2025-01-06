@@ -10,30 +10,32 @@
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    รายการเกม
+                    รายการแบนเนอร์
                 </h2>
                 <div class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="addElement()">
-                        <mat-icon>add</mat-icon>
+                        <mat-icon>person_add</mat-icon>
                         &nbsp;
-                        เพิ่ม Game
+                        เพิ่มแบนเนอร์
                     </button>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Main -->
+     
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-10  bg-white">
         <form [formGroup]="form" class="mx-4">
             <div class="flex flex-col md:flex-row pb-2 mt-5 gap-2">
                 <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
-                    <mat-label>ประเภทเกม</mat-label>
-                    <mat-select [formControlName]="'game_categorie_id'" (selectionChange)="rerender()">
+                    <mat-label>ประเภท</mat-label>
+                    <mat-select [formControlName]="'type'" (selectionChange)="rerender()">
                         <mat-option [value]="null">
                             ทั้งหมด
                         </mat-option>
-                        <mat-option *ngFor="let item of categories;" value="{{item.id}}">
-                            {{item.name}}
+                        <mat-option *ngFor="let item of type;" value="{{item}}">
+                            {{item}}
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -43,7 +45,7 @@
                         <mat-option [value]="null">
                             ทั้งหมด
                         </mat-option>
-                        <mat-option *ngFor="let item of brand;" value="{{item}}">
+                        <mat-option *ngFor="let item of brands;" value="{{item}}">
                             {{item}}
                         </mat-option>
                     </mat-select>
@@ -51,39 +53,36 @@
             </div>
         </form>
         <div class="flex flex-col flex-auto p-5  sm:overflow-y-auto">
-            <table datatable [dtOptions]="dtOptions" class="table row-border hover w-full bg-white whitespace-nowrap">
+            <table datatable [dtOptions]="dtOptions" class="table row-border hover">
                 <thead>
                     <tr>
-                        <th class="w-[10px]">ลำดับ</th>
-                        <th>รูป</th>
-                        <th>ชื่อเกม</th>
-                        <th>Brand</th>
-                        <th>ประเภทเกม</th>
-                        <th>ลำดับ</th>
-                        <th>วันที่สร้าง</th>
-                        <th class="w-[100px]">จัดการ</th>
+                        <th class="w-1/12 text-center">ลำดับ</th>
+                        <th class="w-1/12 text-center">รูป</th>
+                        <th class="w-2/12 text-center">ลำดับการแสดงผล</th>
+                        <th class="w-1/12 text-center">ประเภท</th>
+                        <th class="w-1/12 text-center">Brand</th>
+                        <th class="w-1/12 text-center">วันที่สร้าง</th>
+                        <th class="w-1/12 text-center">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
-
                         <td>{{ pages.begin + (i + 1) }}</td>
                         <td>
-                            <div class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible cursor-pointer"
-                                (click)="showPicture(item.image)">
-                                <img class="object-cover object-center rounded-lg h-auto w-full" [src]="item.image" />
+                            <div
+                                class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible cursor-pointer" (click)="showPicture(item.image)">
+                                <img class="object-cover object-center rounded-lg h-20 w-auto" [src]="item.image" />
                             </div>
                         </td>
-                        <td>{{ item.name ? item.name : "-" }}</td>
-                        <td>{{ item.brand ? item.brand : "-" }}</td>
-                        <td>{{ item.category ? item.category?.name : "-" }}</td>
-                        <td>{{ item.show_step ? item.show_step : "-" }}</td>
-                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
-                        <td>
+                        <td class="text-center">{{ item.show_step ?? '' }}</td>
+                        <td class="text-center">{{ item.type ?? '' }}</td>
+                        <td class="text-center">{{ item.brand ?? '' }}</td>
+                        <td class="text-center">{{ item.created_at | date : "dd-MM-yyyy hh:mm a " }}</td>
+                        <td class="text-center">
                             <button mat-icon-button color="accent" (click)="editElement(item)">
                                 <mat-icon>edit</mat-icon>
                             </button>
-                            <button mat-icon-button color="accent" (click)="delete(item.id)">
+                            <button mat-icon-button color="accent" (click)="deleteElement(item)">
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>
@@ -91,7 +90,9 @@
                 </tbody>
                 <tbody *ngIf="dataRow?.length == 0">
                     <tr>
-                        <td colspan="7" class="no-data-available text-center">ไม่มีข้อมูล !</td>
+                        <td colspan="9" class="no-data-available text-center">
+                            ไม่มีข้อมูล !
+                        </td>
                     </tr>
                 </tbody>
             </table>

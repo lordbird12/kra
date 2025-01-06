@@ -9,13 +9,13 @@
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    รายการประเภทอะไหล่
+                    รายการประเภท Game
                 </h2>
                 <div class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="addElement()">
                         <mat-icon>person_add</mat-icon>
                         &nbsp;
-                        เพิ่มประเภทอะไหล่
+                        เพิ่มประเภท Game
                     </button>
                 </div>
             </div>
@@ -23,21 +23,24 @@
     </div>
 
     <!-- Main -->
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-10  bg-white">
-        <div class="flex flex-col flex-auto p-5  sm:overflow-y-auto">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-10 bg-white">
+        <div class="flex flex-col flex-auto p-5 sm:overflow-y-auto">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover w-full bg-white whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="w-[100px]">จัดการ</th>
-                        <th class="w-[10px]">ลำดับ</th>
-                        <th>ชื่อย่อ</th>
-                        <th>ชื่อ</th>
-                        <th>สร้างโดย</th>
-                        <th>วันที่สร้าง</th>
-                    </tr>
+                        <th class="w-[40px] text-left">ลำดับ</th>
+                        <th class="w-[250px] text-left">ชื่อ </th>
+                        <th class="text-left">วันที่สร้าง</th>
+                        <th class="text-left">วันที่แก้ไข</th>
+                        <th class="w-[100px] text-left">จัดการ</th>
+                    </tr> 
                 </thead>
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
+                        <td>{{ pages.begin + (i + 1) }}</td>
+                        <td>{{ item.name ? item.name : "-" }}</td>
+                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm") : "-" }}</td>
+                        <td>{{ item.updated_at !== null ? (item.updated_at | date : "dd-MM-yy, HH:mm") : "-" }}</td>
                         <td>
                             <button mat-icon-button color="accent" (click)="editElement(item)">
                                 <mat-icon>edit</mat-icon>
@@ -46,11 +49,6 @@
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>
-                        <td>{{ pages.begin + (i + 1) }}</td>
-                        <td>{{ item.code ? item.code : "-" }}</td>
-                        <td>{{ item.name ? item.name : "-" }}</td>
-                        <td>{{ item.create_by ? item.create_by : "-" }}</td>
-                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
                     </tr>
                 </tbody>
                 <tbody *ngIf="dataRow?.length == 0">
@@ -61,4 +59,5 @@
             </table>
         </div>
     </div>
+    
 </div>

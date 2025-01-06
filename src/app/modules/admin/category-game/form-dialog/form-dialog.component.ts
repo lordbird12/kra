@@ -21,7 +21,6 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 @Component({
     selector: 'app-form-dialog',
     templateUrl: './form-dialog.component.html',
-    styleUrls: ['./form-dialog.component.scss'],
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [
@@ -65,8 +64,7 @@ export class FormDialogComponent implements OnInit{
     ngOnInit(): void {
         this.addForm = this.formBuilder.group({
             name: [],
-            code: [],
-
+            prefix: [],
         });
 
     }

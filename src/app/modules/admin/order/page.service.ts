@@ -85,7 +85,7 @@ export class PageService {
     }
     
     getpageCategories(): Observable<any[]> {
-        return this._httpClient.get<any>(`${environment.baseURL}/api/get_page/`).pipe(
+        return this._httpClient.get<any>(`${environment.baseURL}/api/get_page_category`).pipe(
             map((response) => response.data || []), // ใช้ data ที่เป็นอาเรย์
             catchError((error) => {
                 console.error('Error fetching categories:', error);

@@ -4,18 +4,19 @@
     <div class="absolute inset-x-0 bottom-0" *ngIf="isLoading">
         <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
     </div>
-    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
         <div class="flex-1 flemin-w-0">
             <!-- Title -->
             <div class="flex flex-row mt-2 justify-between">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    รายการเกม
+                    รายการหน้าเว็บเพจ
                 </h2>
                 <div class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
                     <button class="px-6 ml-3" mat-flat-button [color]="'primary'" (click)="addElement()">
                         <mat-icon>add</mat-icon>
                         &nbsp;
-                        เพิ่ม
+                        เพิ่ม หน้าเว็บเพจ
                     </button>
                 </div>
             </div>
@@ -24,22 +25,61 @@
 
     <!-- Main -->
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg m-10  bg-white">
+        <form [formGroup]="form" class="mx-4">
+            <div class="flex flex-col md:flex-row pb-2 mt-5 gap-2">
+                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
+                    <mat-label>หมวดหมู่</mat-label>
+                    <mat-select [formControlName]="'page_categorie_id'" (selectionChange)="rerender()">
+                        <mat-option [value]="null">
+                            ทั้งหมด
+                        </mat-option>
+                        <mat-option *ngFor="let item of categories;" value="{{item.id}}">
+                            {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
+                    <mat-label>Brand</mat-label>
+                    <mat-select [formControlName]="'brand'" (selectionChange)="rerender()">
+                        <mat-option [value]="null">
+                            ทั้งหมด
+                        </mat-option>
+                        <mat-option *ngFor="let item of brand;" value="{{item}}">
+                            {{item}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </form>
         <div class="flex flex-col flex-auto p-5  sm:overflow-y-auto">
             <table datatable [dtOptions]="dtOptions" class="table row-border hover w-full bg-white whitespace-nowrap">
                 <thead>
                     <tr>
-                        <th class="w-[100px]">จัดการ</th>
+
                         <th class="w-[10px]">ลำดับ</th>
-                        <th>ชื่อออเดอร์</th>
-                        <th>show_step</th>
                         <th>รูป</th>
-                        <th>type</th>
-                        <th>brand</th>
+                        <th>ลำดับแสดงผล</th>
+                        <th>ชื่อ Order</th>
+                        <th>Brand</th>
+                        <th>หมวดหมู่</th>
+                        <th>ประเภท Order</th>
                         <th>วันที่สร้าง</th>
+                        <th class="w-[100px]">จัดการ</th>
                     </tr>
                 </thead>
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
+                        <td>{{ pages.begin + (i + 1) }}</td>
+                        <td> <button mat-icon-button color="accent" (click)="showPicture(item.image)" [disabled]="item.type === 'Text'">
+                                <mat-icon>image</mat-icon>
+                            </button>
+                        </td>
+                        <td>{{ item.show_step ? item.show_step : "-" }}</td>
+                        <td>{{ item.name ? item.name : "-" }}</td>
+                        <td>{{ item.brand ? item.brand : "-" }}</td>
+                        <td>{{ item.category ? item.category?.name : "-" }}</td>
+                        <td>{{ item.type ? item.type : "-" }}</td>
+                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
                         <td>
                             <button mat-icon-button color="accent" (click)="editElement(item)">
                                 <mat-icon>edit</mat-icon>
@@ -48,16 +88,6 @@
                                 <mat-icon>delete</mat-icon>
                             </button>
                         </td>
-                        <td>{{ pages.begin + (i + 1) }}</td>
-                        <td>{{ item.name ? item.name : "-" }}</td>
-                        <td>{{ item.show_step ? item.show_step : "-" }}</td>
-                        <td>{{ item.type ? item.type : "-" }}</td>
-                        <td>{{ item.brand ? item.brand : "-" }}</td>
-                        <td>  <button mat-icon-button color="accent" (click)="showPicture(item.image)">
-                            <mat-icon>image</mat-icon>
-                        </button></td>
-                        <td>{{ item.create_by ? item.create_by : "-" }}</td>
-                        <td>{{ item.created_at !== null ? (item.created_at | date : "dd-MM-yy, HH:mm"): "-"}}</td>
                     </tr>
                 </tbody>
                 <tbody *ngIf="dataRow?.length == 0">

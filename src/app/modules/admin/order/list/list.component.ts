@@ -3,7 +3,7 @@
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
@@ -57,6 +57,12 @@ export class ListComponent implements OnInit, AfterViewInit {
     dataRow: any[] = [];
     dtOptions: DataTables.Settings = {};
     positions: any[];
+    categories: any[];
+    brand: string[] = [
+        'K', 'R' ,'A'
+    ];
+    formFieldHelpers: string[] = ['fuse-mat-dense'];
+    form: FormGroup
     // public dataRow: any[];
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     constructor(
@@ -64,12 +70,17 @@ export class ListComponent implements OnInit, AfterViewInit {
         private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _service: PageService,
-        private _router: Router
+        private _router: Router,
+        private _fb: FormBuilder
     ) {
-
+        this.form = this._fb.group({
+            page_categorie_id: null,
+            brand: null
+        })
      }
 
     ngOnInit() {
+        this.loadCategories();
         this.loadTable();
      
     }
@@ -95,18 +106,19 @@ export class ListComponent implements OnInit, AfterViewInit {
         // });
     }
     addElement() {
-        const dialogRef = this.dialog.open(FormDialogComponent, {
-            width: '500px', // กำหนดความกว้างของ Dialog
-            maxHeight: '100Vh'
-        });
+        this._router.navigate(['/admin/order/form'])
+        // const dialogRef = this.dialog.open(FormDialogComponent, {
+        //     width: '500px', // กำหนดความกว้างของ Dialog
+        //     maxHeight: '100Vh'
+        // });
 
-        dialogRef.afterClosed().subscribe(result => {
-            if (result) {
+        // dialogRef.afterClosed().subscribe(result => {
+        //     if (result) {
 
-                this.rerender();
-                // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
-            }
-        });
+        //         this.rerender();
+        //         // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
+        //     }
+        // });
     }
   
 
@@ -123,6 +135,8 @@ export class ListComponent implements OnInit, AfterViewInit {
             },
             ajax: (dataTablesParameters: any, callback) => {
                 dataTablesParameters.status = null;
+                dataTablesParameters.page_categorie_id = this.form.value.page_categorie_id;
+                dataTablesParameters.brand = this.form.value.brand
                 that._service.getPage(dataTablesParameters).subscribe((resp: any) => {
                     this.dataRow = resp.data;
                     this.pages.current_page = resp.current_page;
@@ -155,6 +169,16 @@ export class ListComponent implements OnInit, AfterViewInit {
             ],
         };
     }
+
+    loadCategories(): void {
+        this._service.getpageCategories().subscribe({
+          next: (categories: any) => {
+            this.categories = Array.isArray(categories) ? categories : [];
+          },
+          error: (err) => console.error('Failed to load categories', err),
+        });
+      }
+    
 
     delete(itemid: any) {
         const confirmation = this._fuseConfirmationService.open({

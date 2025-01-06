@@ -21,10 +21,9 @@ import { PageService } from '../page.service';
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { Router } from '@angular/router';
 import { PictureComponent } from '../../picture/picture.component';
-import { FuseConfirmationService } from '@fuse/services/confirmation';
 
 @Component({
-    selector: 'list',
+    selector: 'warehouse-list',
     templateUrl: './list.component.html',
     encapsulation: ViewEncapsulation.None,
     standalone: true,
@@ -45,7 +44,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
         MatDatepickerModule,
         MatPaginatorModule,
         MatTableModule,
-        DataTablesModule,
+        DataTablesModule
     ],
 })
 
@@ -54,164 +53,115 @@ export class ListComponent implements OnInit, AfterViewInit {
     @ViewChild(DataTableDirective)
     dtElement!: DataTableDirective;
     isLoading: boolean = false;
-    dataRow: any[] = [];
     dtOptions: DataTables.Settings = {};
     positions: any[];
-    form: FormGroup
-    categories: any[] = []
-    brand: string[] = [
-        'K', 'R' ,'A'
+    public dataRow: any[];
+    brands: any[] = [
+        'K','R','A'
     ];
+    type: any[] = [
+        'Banner', 'Jackpot'
+    ]
+    form: FormGroup;
     formFieldHelpers: string[] = ['fuse-mat-dense'];
-    // public dataRow: any[];
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     constructor(
         private dialog: MatDialog,
-        private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef,
         private _service: PageService,
         private _router: Router,
         private _fb: FormBuilder
-    ) {
+    ) 
+    {
         this.form = this._fb.group({
-            game_categorie_id: null,
-            brand: null
+            type: '',
+            brand: ''
         })
-     }
+    }
 
     ngOnInit() {
         this.loadTable();
-        this.loadCategories();
-     
     }
 
     ngAfterViewInit(): void {
         this._changeDetectorRef.detectChanges();
     }
-
-    loadCategories(): void {
-        this._service.getGameCategories().subscribe({
-            next: (categories: any) => {
-                console.log('Categories:', categories); // ตรวจสอบค่าที่ได้
-                this.categories = Array.isArray(categories) ? categories : []; // แปลงให้เป็นอาเรย์ถ้าจำเป็น
-            },
-            error: (err) => console.error('Failed to load categories', err),
-        });
-    }
-
-
-    // เพิ่มเมธอด editElement(element) และ deleteElement(element)
+    
     editElement(element: any) {
-        // this._router.navigate(['/admin/game/edit/' + element.id])
         const dialogRef = this.dialog.open(FormDialogComponent, {
-            width: '500px', // กำหนดความกว้างของ Dialog
-            data: element
+            width: '400px', // กำหนดความกว้างของ Dialog
+            data: {
+                data: element,
+            }
         });
 
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                this.rerender();
+                this.rerender()
                 // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
             }
         });
     }
+
     addElement() {
         const dialogRef = this.dialog.open(FormDialogComponent, {
             width: '500px', // กำหนดความกว้างของ Dialog
-            maxHeight: '100Vh'
         });
-
         dialogRef.afterClosed().subscribe(result => {
-            if (result) {
-
-                this.rerender();
-                // เมื่อ Dialog ถูกปิด ดำเนินการตามผลลัพธ์ที่คุณได้รับจาก Dialog
-            }
+            this.rerender()
         });
     }
-    
-  
 
     pages = { current_page: 1, last_page: 1, per_page: 10, begin: 0 };
     loadTable(): void {
         const that = this;
         this.dtOptions = {
-            pagingType: "full_numbers",
+            pagingType: 'full_numbers',
             pageLength: 25,
             serverSide: true,
             processing: true,
             language: {
-                url: "https://cdn.datatables.net/plug-ins/1.11.3/i18n/th.json",
+                url: 'https://cdn.datatables.net/plug-ins/1.11.3/i18n/th.json',
             },
             ajax: (dataTablesParameters: any, callback) => {
-                // dataTablesParameters.status = null;
-                dataTablesParameters.game_categorie_id = this.form.value.game_categorie_id;
-                dataTablesParameters.brand = this.form.value.brand
-                that._service.getPage(dataTablesParameters).subscribe((resp: any) => {
-                    this.dataRow = resp.data;
-                    this.pages.current_page = resp.current_page;
-                    this.pages.last_page = resp.last_page;
-                    this.pages.per_page = resp.per_page;
-                    if (resp.data.currentPage > 1) {
-                        this.pages.begin =
-                            parseInt(resp.per_page) *
-                            (parseInt(resp.current_page) - 1);
-                    } else {
-                        this.pages.begin = 0;
-                    }
-
-                    callback({
-                        recordsTotal: resp.total,
-                        recordsFiltered: resp.total,
-                        data: [],
+                dataTablesParameters.status = null;
+                dataTablesParameters.brand = this.form.value.brand;
+                dataTablesParameters.type = this.form.value.type;
+                that._service
+                    .getPage(dataTablesParameters)
+                    .subscribe((resp: any) => {
+                        this.dataRow = resp.data;
+                        this.pages.current_page = resp.current_page;
+                        this.pages.last_page = resp.last_page;
+                        this.pages.per_page = resp.per_page;
+                        if (resp.current_page > 1) {
+                            this.pages.begin =
+                                resp.per_page * resp.current_page - 1;
+                        } else {
+                            this.pages.begin = 0;
+                        }
+                        callback({
+                            recordsTotal: resp.total,
+                            recordsFiltered: resp.total,
+                            data: [],
+                        });
+                        this._changeDetectorRef.markForCheck();
                     });
-                    this._changeDetectorRef.markForCheck();
-                });
             },
             columns: [
                 { data: 'No' },
-                { data: 'image' },
                 { data: 'name' },
-                { data: 'brand' },
-                { data: 'game_categorie' },
-                { data: 'show_step' },
-                { data: 'created_at' },
-                { data: 'action',orderable: false },
-
+                { data: 'detail' },
+                { data: 'shevle' },
+                { data: 'picture' },
+                { data: 'create_by' },
+                { data: 'action', orderable: false },
             ],
         };
     }
 
-    delete(itemid: any) {
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'ลบข้อมูล',
-            message: 'คุณต้องการลบข้อมูลใช่หรือไม่ ?',
-            icon: {
-                show: true,
-                name: 'heroicons_outline:exclamation-triangle',
-                color: 'warning',
-            },
-            actions: {
-                confirm: {
-                    show: true,
-                    label: 'ยืนยัน',
-                    color: 'warn',
-                },
-                cancel: {
-                    show: true,
-                    label: 'ยกเลิก',
-                },
-            },
-            dismissible: true,
-        });
-        confirmation.afterClosed().subscribe((result) => {
-            if (result === 'confirmed') {
-                this._service.delete(itemid).subscribe((resp) => {
-                    this.rerender();
-                });
-            }
-            error: (err: any) => {};
-        });
+    deleteElement() {
+        // เขียนโค้ดสำหรับการลบออกองคุณ
     }
 
     showPicture(imgObject: any): void {
@@ -235,5 +185,6 @@ export class ListComponent implements OnInit, AfterViewInit {
         });
     }
 }
+
 
 

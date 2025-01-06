@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ProjectService } from 'app/modules/admin/dashboards/project/project.service';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
@@ -35,6 +35,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
     chartMonthlyExpenses: ApexOptions = {};
     chartYearlyExpenses: ApexOptions = {};
     data: any;
+    graph: any;
     selectedProject: string = 'ACME Corp. Backend App';
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -44,7 +45,9 @@ export class ProjectComponent implements OnInit, OnDestroy {
     constructor(
         private _projectService: ProjectService,
         private _router: Router,
+        private _activated: ActivatedRoute
     ) {
+        this.graph = this._activated.snapshot.data.graph.data
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -166,7 +169,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             grid: {
                 borderColor: 'var(--fuse-border)',
             },
-            labels: this.data.githubIssues.labels,
+            labels: this.data?.githubIssues?.labels,
             legend: {
                 show: false,
             },
@@ -175,7 +178,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                     columnWidth: '50%',
                 },
             },
-            series: this.data.githubIssues.series,
+            series: this.data?.githubIssues?.series,
             states: {
                 hover: {
                     filter: {
@@ -231,7 +234,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                     enabled: false,
                 },
             },
-            labels: this.data.taskDistribution.labels,
+            labels: this.data?.taskDistribution?.labels,
             legend: {
                 position: 'bottom',
             },
@@ -245,7 +248,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                     },
                 },
             },
-            series: this.data.taskDistribution.series,
+            series: this.data?.taskDistribution?.series,
             states: {
                 hover: {
                     filter: {
@@ -316,7 +319,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                     },
                 },
             },
-            series: this.data.budgetDistribution.series,
+            series: this.data?.budgetDistribution?.series,
             stroke: {
                 width: 2,
             },
@@ -334,7 +337,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                         fontWeight: '500',
                     },
                 },
-                categories: this.data.budgetDistribution.categories,
+                categories: this.data?.budgetDistribution?.categories,
             },
             yaxis: {
                 max: (max: number): number => parseInt((max + 10).toFixed(0), 10),
@@ -357,7 +360,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 },
             },
             colors: ['#22D3EE'],
-            series: this.data.weeklyExpenses.series,
+            series:  this.data?.weeklyExpenses?.series,
             stroke: {
                 curve: 'smooth',
             },
@@ -366,7 +369,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             },
             xaxis: {
                 type: 'category',
-                categories: this.data.weeklyExpenses.labels,
+                categories:  this.data?.weeklyExpenses?.labels,
             },
             yaxis: {
                 labels: {
@@ -390,7 +393,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 },
             },
             colors: ['#4ADE80'],
-            series: this.data.monthlyExpenses.series,
+            series: this.data?.monthlyExpenses?.series,
             stroke: {
                 curve: 'smooth',
             },
@@ -399,7 +402,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             },
             xaxis: {
                 type: 'category',
-                categories: this.data.monthlyExpenses.labels,
+                categories: this.data?.monthlyExpenses?.labels,
             },
             yaxis: {
                 labels: {
@@ -423,7 +426,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
                 },
             },
             colors: ['#FB7185'],
-            series: this.data.yearlyExpenses.series,
+            series: this.data?.yearlyExpenses?.series,
             stroke: {
                 curve: 'smooth',
             },
@@ -432,7 +435,7 @@ export class ProjectComponent implements OnInit, OnDestroy {
             },
             xaxis: {
                 type: 'category',
-                categories: this.data.yearlyExpenses.labels,
+                categories: this.data?.yearlyExpenses?.labels,
             },
             yaxis: {
                 labels: {

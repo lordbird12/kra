@@ -28,6 +28,7 @@ const token = localStorage.getItem('accessToken') || null;
 export class PageService {
     // Private
     private _data: BehaviorSubject<any | null> = new BehaviorSubject(null);
+
     /**
      * Constructor
      */
@@ -37,9 +38,17 @@ export class PageService {
         headers: new HttpHeaders({ Authorization: `Bearer ${token}` }),
     };
 
-    create(data: any): Observable<any> {
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    create(data: FormData): Observable<any> {
         return this._httpClient
-            .post<any>(environment.baseURL + '/api/page_category', data)
+            .post<any>(environment.baseURL + '/api/banner', data)
             .pipe(
                 tap((result) => {
                     this._data.next(result);
@@ -47,9 +56,9 @@ export class PageService {
             );
     }
 
-    update(data: any, id: any): Observable<any> {
+    update(data: any): Observable<any> {
         return this._httpClient
-            .put<any>(environment.baseURL + '/api/page_category/' + id, data)
+            .post<any>(environment.baseURL + '/api/update_banner', data)
             .pipe(
                 tap((result) => {
                     this._data.next(result);
@@ -59,16 +68,8 @@ export class PageService {
 
     delete(id: any): Observable<any> {
         return this._httpClient.delete<any>(
-            environment.baseURL + '/api/page_category/' + id,
+            environment.baseURL + '/api/banner/' + id,
             { headers: this.httpOptionsFormdata.headers }
-        );
-    }
-
-    getAllMenu(): Observable<any> {
-        return this._httpClient.get(environment.baseURL + '/api/get_menu').pipe(
-            switchMap((response: any) => {
-                return of(response.data);
-            })
         );
     }
 
@@ -104,13 +105,47 @@ export class PageService {
     getPage(dataTablesParameters: any): Observable<DataTablesResponse> {
         return this._httpClient
             .post(
-                environment.baseURL + '/api/page_category_page',
+                environment.baseURL + '/api/banner_page',
                 dataTablesParameters,
                 this.httpOptionsFormdata
             )
             .pipe(
                 switchMap((response: any) => {
                     return of(response.data);
+                })
+            );
+    }
+
+    getById(id: any): Observable<any> {
+        return this._httpClient
+            .get<any>(environment.baseURL + '/api/banner/' + id)
+            .pipe(
+                tap((result) => {
+                    this._data.next(result);
+                })
+            );
+    }
+
+    newChannel(data: any): Observable<any> {
+        return this._httpClient
+            .post(
+                environment.baseURL + '/api/channel',
+                data
+            )
+            .pipe(
+                switchMap((response: any) => {
+                    // Return a new observable with the response
+                    return of(response);
+                })
+            );
+    }
+
+    getChanel(id): Observable<any> {
+        return this._httpClient
+            .get<any>(environment.baseURL + '/api/get_floor/'+ id)
+            .pipe(
+                tap((meterial) => {
+                    this._data.next(meterial);
                 })
             );
     }

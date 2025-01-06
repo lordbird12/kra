@@ -1,26 +1,23 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSort, Sort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { TextFieldModule } from '@angular/cdk/text-field';
 import { CommonModule, NgClass } from '@angular/common';
-import { MatRadioButton, MatRadioModule } from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { PageService } from '../page.service';
-import { Employee } from '../page.types';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 @Component({
     selector: 'app-form-dialog',
@@ -45,68 +42,54 @@ import { BrowserModule } from '@angular/platform-browser';
         MatPaginatorModule,
         MatTableModule,
         MatRadioModule,
-        CommonModule
+        CommonModule,
+        NgxDropzoneModule
     ],
 })
 export class FormDialogComponent implements OnInit {
+    formFieldHelpers: string[] = ['fuse-mat-dense'];
     addForm: FormGroup;
-    selectedFile: File | null = null;
-    // flashErrorMessage: string;
+    isLoading: boolean = false;
     positions: any[];
-    
     flashMessage: 'success' | 'error' | null = null;
-    taxType: any[] = [
-        {
-            id: 1,
-            name: 'Text',
-        },
-        {
-            id: 2,
-            name: 'Image',
-        },
-    ];
+    url_image: string = ''
+    categories: any[] = []; // เก็บข้อมูลประเภทเกม
+
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
-        @Inject(MAT_DIALOG_DATA) private data: any,
+        @Inject(MAT_DIALOG_DATA) public data: any,
         private formBuilder: FormBuilder,
         private _service: PageService,
         private _fuseConfirmationService: FuseConfirmationService,
         private _changeDetectorRef: ChangeDetectorRef
-    ) { }
+    ) {
 
     ngOnInit(): void {
-      // สร้าง Reactive Form
-      this.addForm = this.formBuilder.group({
-          page_categorie_id: [],
-          name: ['', Validators.required],
-          show_step: [],
-          type: [],
-          brand: [''],
-          image: ''
-      });
-  
-      // ดึงค่าจาก localStorage
-      const value = localStorage.getItem('user'); // ดึงข้อมูลที่เก็บไว้ใน key "user"
-      console.log('Raw localStorage value:', value); // แสดงค่า raw จาก localStorage
-  
-      if (value) {
-          try {
-              const jsonObject = JSON.parse(value); // แปลง string เป็น JSON object
-              console.log('Parsed localStorage object:', jsonObject); // แสดง JSON object
-  
-              const brandValue = jsonObject.brand || ''; // ตรวจสอบว่ามี key "brand" หรือไม่
-              console.log('Brand value:', brandValue); // แสดงค่า brand
-  
-              this.addForm.patchValue({ brand: brandValue }); // ตั้งค่าในฟอร์ม
-              console.log('Form value after patch:', this.addForm.value); // แสดงค่าฟอร์มหลังตั้งค่า
-          } catch (error) {
-              console.error('Error parsing localStorage value:', error);
-              alert('เกิดข้อผิดพลาดในการแปลงข้อมูลจาก localStorage');
-          }
-      } else {
-          console.warn('ไม่มีข้อมูลใน localStorage สำหรับ key "user"');
-      }
-  }
-  
+        // localStorage.setItem('user', JSON.stringify({ brand: 'K', type: 'Example Type' }));
+
+        // สร้าง Reactive Form
+        this.addForm = this.formBuilder.group({
+            page_categorie_id: [],
+            name: ['', Validators.required],
+            show_step: [],
+            type: [],
+            brand: [''],
+            image: ''
+        });
+    
+        // ดึงค่าจาก localStorage
+        const value = localStorage.getItem('user'); // ดึงข้อมูลที่เก็บไว้ใน key "user"
+        console.log('Raw localStorage value:', value); // แสดงค่า raw จาก localStorage
+        if (value) {
+            const jsonObject = JSON.parse(value); // แปลง string เป็น JSON object
+            console.log('Parsed localStorage object:', jsonObject); // แสดง JSON object
+    
+            const brandValue = jsonObject.brand || ''; // ตรวจสอบว่ามี key "brand" หรือไม่
+            console.log('Brand value:', brandValue); // แสดงค่า brand
+    
+            this.addForm.patchValue({ brand: brandValue }); // ตั้งค่าในฟอร์ม
+            console.log('Form value after patch:', this.addForm.value); // แสดงค่าฟอร์มหลังตั้งค่า
+        }
+    }
 
     onFileSelected(event: Event): void {
         const input = event.target as HTMLInputElement;
@@ -116,30 +99,81 @@ export class FormDialogComponent implements OnInit {
         }
       }
     onSaveClick(): void {
-        if (this.addForm.invalid) {
-          this._fuseConfirmationService.open({
-            title: 'กรุณาระบุข้อมูล',
-            icon: { show: true, name: 'heroicons_outline:exclamation', color: 'warning' },
-            dismissible: true
-          });
-          return;
-        }
-    
-        // Create FormData to send along with the file
-        const formData = new FormData();
-        formData.append('page_categorie_id', this.addForm.get('page_categorie_id')?.value || '');
-        formData.append('name', this.addForm.get('name')?.value || '');
-        formData.append('show_step', this.addForm.get('show_step')?.value || '');
-        formData.append('type', this.addForm.get('type')?.value || '');
-        formData.append('brand', this.addForm.get('brand')?.value || '');
-    
-        if (this.selectedFile) {
-          formData.append('image', this.selectedFile, this.selectedFile.name);
-        }
-    
-        // Send form data (including image file) to the server
-        this._service.create(formData).subscribe({
-          next: (resp) => {
+        this.flashMessage = null;
+        // Open the confirmation dialog
+        if (this.data) {
+            const confirmation = this._fuseConfirmationService.open({
+                "title": "แก้ไขข้อมูล",
+                "message": "คุณต้องการแก้ไขข้อมูลใช่หรือไม่ ",
+                "icon": {
+                    "show": false,
+                    "name": "heroicons_outline:exclamation",
+                    "color": "warning"
+                },
+                "actions": {
+                    "confirm": {
+                        "show": true,
+                        "label": "ยืนยัน",
+                        "color": "primary"
+                    },
+                    "cancel": {
+                        "show": true,
+                        "label": "ยกเลิก"
+                    }
+                },
+                "dismissible": true
+            });
+
+            // Subscribe to the confirmation dialog closed action
+            confirmation.afterClosed().subscribe((result) => {
+                if (result === 'confirmed') {
+                    const formData = new FormData();
+                    Object.entries(this.addForm.value).forEach(([key, value]: [string, any]) => {
+                        if (key === 'image' && value instanceof File) {
+                            formData.append(key, value); // ถ้า image เป็นไฟล์
+                        } else {
+                            formData.append(key, value);
+                        }
+                    });
+
+
+                    for (var i = 0; i < this.files.length; i++) {
+                        formData.append('image', this.files[i]);
+                    }
+                    this._service.update(formData).subscribe({
+                        next: (resp: any) => {
+                            this.showFlashMessage('success');
+                            this.dialogRef.close(resp);
+                        },
+                        error: (err: any) => {
+                            this.addForm.enable();
+                            this._fuseConfirmationService.open({
+                                "title": "กรุณาระบุข้อมูล",
+                                "message": err.error.message,
+                                "icon": {
+                                    "show": true,
+                                    "name": "heroicons_outline:exclamation",
+                                    "color": "warning"
+                                },
+                                "actions": {
+                                    "confirm": {
+                                        "show": false,
+                                        "label": "ยืนยัน",
+                                        "color": "primary"
+                                    },
+                                    "cancel": {
+                                        "show": false,
+                                        "label": "ยกเลิก",
+
+                                    }
+                                },
+                                "dismissible": true
+                            });
+                        }
+                    })
+                }
+            })
+        } else {
             const confirmation = this._fuseConfirmationService.open({
                 "title": "เพิ่มข้อมูล",
                 "message": "คุณต้องการเพิ่มข้อมูลใช่หรือไม่ ",
@@ -161,23 +195,66 @@ export class FormDialogComponent implements OnInit {
                 },
                 "dismissible": true
             });
-    
-            this.dialogRef.close(resp);
-          },
-          error: (err) => {
-            this._fuseConfirmationService.open({
-              title: 'เกิดข้อผิดพลาด',
-              message: err.error?.message || 'ไม่สามารถบันทึกข้อมูลได้',
-              icon: { show: true, name: 'heroicons_outline:exclamation', color: 'warning' },
-              dismissible: true
-            });
-          }
-        });
-      }
-    
-      onCancelClick(): void {
+
+            // Subscribe to the confirmation dialog closed action
+            confirmation.afterClosed().subscribe((result) => {
+                if (result === 'confirmed') {
+
+                    const formData = new FormData();
+                    Object.entries(this.addForm.value).forEach(([key, value]: any[]) => {
+                        formData.append(key, value);
+                    });
+
+                    for (var i = 0; i < this.files.length; i++) {
+                        formData.append('image', this.files[i]);
+                    }
+                    this._service.create(formData).subscribe({
+                        next: (resp: any) => {
+                            this.showFlashMessage('success');
+                            this.dialogRef.close(resp);
+                        },
+                        error: (err: any) => {
+                            this.addForm.enable();
+                            this._fuseConfirmationService.open({
+                                "title": "กรุณาระบุข้อมูล",
+                                "message": err.error.message,
+                                "icon": {
+                                    "show": true,
+                                    "name": "heroicons_outline:exclamation",
+                                    "color": "warning"
+                                },
+                                "actions": {
+                                    "confirm": {
+                                        "show": false,
+                                        "label": "ยืนยัน",
+                                        "color": "primary"
+                                    },
+                                    "cancel": {
+                                        "show": false,
+                                        "label": "ยกเลิก",
+
+                                    }
+                                },
+                                "dismissible": true
+                            });
+                        }
+                    })
+                }
+            })
+        }
+
+
+
+
+
+    }
+
+
+
+    onCancelClick(): void {
+
         this.dialogRef.close();
-      }
+    }
 
     showFlashMessage(type: 'success' | 'error'): void {
         // Show the message
@@ -194,6 +271,21 @@ export class FormDialogComponent implements OnInit {
             // Mark for check
             this._changeDetectorRef.markForCheck();
         }, 3000);
+    }
+
+    files: File[] = [];
+    onSelect(event: { addedFiles: File[] }): void {
+        this.files.push(...event.addedFiles);
+        this.url_image = ''
+    }
+
+    onRemove(file: File): void {
+        const index = this.files.indexOf(file);
+        if (index >= 0) {
+            this.files.splice(index, 1);
+            this.url_image = this.data?.image
+        }
+
     }
 
 }
