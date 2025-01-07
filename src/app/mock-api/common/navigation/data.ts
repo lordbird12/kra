@@ -145,7 +145,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'products.category-item',
                 title: 'ประเภทหน้าเว็บเพจ',
                 type: 'basic',
-                icon: 'heroicons_outline:document',
+                icon: 'heroicons_outline:cube',
                 link: '/admin/category-item/list',
             },
             {
