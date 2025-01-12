@@ -59,7 +59,9 @@ export class FormComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
   dataRow: any[] = [];
-
+  brand: string[] = [
+    'K', 'R', 'A'
+  ];
   form: FormGroup;
   MenuList: any = [];
   formFieldHelpers: string[] = ['fuse-mat-dense'];

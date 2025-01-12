@@ -21,6 +21,20 @@
                 <div class="flex flex-col gap-2 w-full">
                     <div class="mx-3 flex mb-6 flex-col  w-full">
                         <div class="w-full px-3 mb-6 md:mb-0">
+
+                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
+                                <mat-label>Website</mat-label>
+                                <mat-select [formControlName]="'brand'">
+                                    <mat-option [value]="null">
+                                        ทั้งหมด
+                                    </mat-option>
+                                    <mat-option *ngFor="let item of brand;" value="{{item}}">
+                                        {{item == 'K' ? "KGG":item == 'R' ? 'RG':item == 'A' ? 'AMB':'AMB'}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="w-full px-3 mb-6 md:mb-0">
                             <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
                                 <mat-label>ชื่อ</mat-label>
                                 <input matInput formControlName="name">
@@ -51,12 +65,7 @@
                                 <input matInput formControlName="show_step" type="number">
                             </mat-form-field>
                         </div>
-                        <div class="md:w-full px-3">
-                            <mat-form-field [ngClass]="formFieldHelpers" class="w-full">
-                                <mat-label>Brand</mat-label>
-                                <input matInput formControlName="brand" readonly>
-                            </mat-form-field>
-                        </div>
+                      
                     </div>
                     <!-- ไฟล์แนบ -->
                     <div *ngIf="selectedId === 6 || selectedId === 5"

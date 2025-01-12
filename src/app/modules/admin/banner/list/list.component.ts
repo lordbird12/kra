@@ -89,7 +89,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     
     editElement(element: any) {
         const dialogRef = this.dialog.open(FormDialogComponent, {
-            width: '400px', // กำหนดความกว้างของ Dialog
+            width: '500px', // กำหนดความกว้างของ Dialog
             data: {
                 data: element,
             }

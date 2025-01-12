@@ -54,7 +54,9 @@ export class FormDialogComponent implements OnInit {
     flashMessage: 'success' | 'error' | null = null;
     url_image: string = ''
     categories: any[] = []; // เก็บข้อมูลประเภทเกม
-
+    brand: any[] = [
+        'K', 'R', 'A'
+    ];
     constructor(private dialogRef: MatDialogRef<FormDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: any,
         private formBuilder: FormBuilder,
@@ -81,8 +83,8 @@ export class FormDialogComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.data) {
-            this.addForm.patchValue({ 
-                ...this.data, 
+            this.addForm.patchValue({
+                ...this.data,
                 game_categorie_id: this.data?.category.id,
                 image: '',
             });
@@ -91,15 +93,15 @@ export class FormDialogComponent implements OnInit {
 
         this.loadCategories();
         console.log('Initial form value:', this.addForm.value);
-        
+
         // ดึงข้อมูล `brand` จาก localStorage
-        const userData = localStorage.getItem('user');
-        if (userData) {
-            const user = JSON.parse(userData); // แปลง string เป็น JSON object
-            this.addForm.patchValue({
-                brand: user.brand // ตั้งค่า brand อัตโนมัติ
-            });
-        }
+        // const userData = localStorage.getItem('user');
+        // if (userData) {
+        //     const user = JSON.parse(userData); // แปลง string เป็น JSON object
+        //     this.addForm.patchValue({
+        //         brand: user.brand // ตั้งค่า brand อัตโนมัติ
+        //     });
+        // }
     }
 
 

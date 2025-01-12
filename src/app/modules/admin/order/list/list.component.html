@@ -28,6 +28,17 @@
         <form [formGroup]="form" class="mx-4">
             <div class="flex flex-col md:flex-row pb-2 mt-5 gap-2">
                 <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
+                    <mat-label>Website</mat-label>
+                    <mat-select [formControlName]="'brand'" (selectionChange)="rerender()">
+                        <mat-option [value]="null">
+                            ทั้งหมด
+                        </mat-option>
+                        <mat-option *ngFor="let item of brand;" value="{{item}}">
+                            {{item == 'K' ? "KGG":item == 'R' ? 'RG':item == 'A' ? 'AMB':'AMB'}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
                     <mat-label>หมวดหมู่</mat-label>
                     <mat-select [formControlName]="'page_categorie_id'" (selectionChange)="rerender()">
                         <mat-option [value]="null">
@@ -38,17 +49,7 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
-                <mat-form-field [ngClass]="formFieldHelpers" class="w-1/4">
-                    <mat-label>Brand</mat-label>
-                    <mat-select [formControlName]="'brand'" (selectionChange)="rerender()">
-                        <mat-option [value]="null">
-                            ทั้งหมด
-                        </mat-option>
-                        <mat-option *ngFor="let item of brand;" value="{{item}}">
-                            {{item}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+
             </div>
         </form>
         <div class="flex flex-col flex-auto p-5  sm:overflow-y-auto">
@@ -60,7 +61,7 @@
                         <th>รูป</th>
                         <th class="text-left">ลำดับแสดงผล</th>
                         <th class="text-left">ชื่อรายการ</th>
-                        <th class="text-left">Brand</th>
+                        <th class="text-left">Website</th>
                         <th class="text-left">หมวดหมู่</th>
                         <th class="text-left">ประเภทข้อมูล</th>
                         <th class="text-left">วันที่สร้าง</th>
@@ -70,14 +71,17 @@
                 <tbody *ngIf="dataRow?.length != 0">
                     <tr *ngFor="let item of dataRow; let i = index">
                         <td>{{ pages.begin + (i + 1) }}</td>
-                        <td> 
+                        <td>
                             <div class="grid w-full place-items-center overflow-x-scroll rounded-lg p-2 lg:overflow-visible cursor-pointer"
                                 (click)="showPicture(item.image)">
                                 <img class="object-cover object-center rounded-lg h-auto w-full" [src]="item.image" />
                             </div>
                         </td>
                         <td>{{ item.name ? item.name : "-" }}</td>
-                        <td>{{ item.brand ? item.brand : "-" }}</td>
+                        <td class="text-left">
+                            {{item.brand == 'K' ? "KGG":item.brand == 'R' ? 'RG':item.brand == 'A' ?
+                            'AMB':'-'}}
+                        </td>
                         <td>{{ item.category ? item.category?.name : "-" }}</td>
                         <td>{{ item.type ? item.type : "-" }}</td>
                         <td>{{ item.show_step ? item.show_step : "-" }}</td>
