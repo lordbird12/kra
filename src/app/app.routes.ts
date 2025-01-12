@@ -199,6 +199,11 @@ export const appRoutes: Route[] = [
                         loadChildren: () =>
                             import('app/modules/admin/banner/page.routes'),
                     },
+                    {
+                        path: 'activity',
+                        loadChildren: () =>
+                            import('app/modules/admin/activity/page.routes'),
+                    },
                 ],
             },
         ],
